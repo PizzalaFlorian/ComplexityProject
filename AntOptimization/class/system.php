@@ -1,9 +1,10 @@
 <?php
+	require('path.php');
 
-	class System(){
+	class System{
 		private $taux_apparition_fourmis;
 		private $max_fourmis;
-		private $path[];
+		private $paths[];
 		private $vitesse;
 	}
 
