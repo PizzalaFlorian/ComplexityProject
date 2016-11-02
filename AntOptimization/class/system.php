@@ -5,7 +5,7 @@
 		private $taux_apparition_fourmis;
 		private $max_fourmis;
 		private $paths[];
-		private $vitesse;
+		private $tempsCollectFood;
 	}
 
 ?>
