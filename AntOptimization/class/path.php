@@ -21,7 +21,32 @@
 			$this->pheromoneEntree = 0;
 			$this->pheromoneSortie = 0;
 		}
+		/* ---------------------------------------------------------------------------------------------
+		* Getter collection
+		--------------------------------------------------------------------------------------------- */
+		public function getPheromoneEntree(){
+			return $this->pheromoneEntree;
+		}
 
+		public function getPheromoneSortie(){
+			return $this->pheromoneSortie;
+		}
+
+		public function getAntAller(){
+			return count($this->antListAller);
+		}
+
+		public function getAntRetour(){
+			return count($this->antListRetour);
+		}
+
+		public function getAntOnPath(){
+			return $this->getAntAller() + $this->getAntRetour();
+		}
+
+		public function getAntFood(){
+			return count($this->antListFood);
+		}
 		/* ---------------------------------------------------------------------------------------------
 		*Ajoute une fourmis dans le sens aller et met a jour le pheromone.
 		--------------------------------------------------------------------------------------------- */
