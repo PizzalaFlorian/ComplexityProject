@@ -1,4 +1,5 @@
 <?php
+	require('node.php');
 
 	class Path{
 		private $lenght;//longeur du chemin
@@ -63,8 +64,10 @@
 					$nodes[$j]->resetListAller();
 				}
 				else{
-					$nodes[$j + 1]->setListAller($nodes[$j]->getListAller());
-					$nodes[$j]->resetListAller();
+					if(!$nodes[$j]->isAllerEmpty()){
+						$nodes[$j + 1]->setListAller($nodes[$j]->getListAller());
+						$nodes[$j]->resetListAller();
+					}
 				}
 			}
 
@@ -80,8 +83,10 @@
 					$Food->resetListRetour();
 				}
 				else{
-					$nodes[$j - 1]->setListRetour($nodes[$j]->getListRetour());
-					$nodes[$j]->resetListRetour();
+					if(!$nodes[$j]->isRetourEmpty()){
+						$nodes[$j - 1]->setListRetour($nodes[$j]->getListRetour());
+						$nodes[$j]->resetListRetour();
+					}
 				}
 			}
 
@@ -101,7 +106,7 @@
 		* Boucle principale
 		* renvoie le nombre de fourmis qui retourne au nid.
 		--------------------------------------------------------------------------------------------- */
-		public function proceed(){
+		public function iterate(){
 			$nbReturnNid = $this->move();
 			$this->evaporate();
 			return $nbReturnNid;
