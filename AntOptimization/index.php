@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS</title>
+<title>Complexité - Fourmis</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- www3c import -->
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
@@ -25,21 +25,66 @@
         <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-opennav"></i>
         <div class="w3-center">
             <h1 class="w3-xxxlarge w3-animate-bottom">Projet Complexité M2 WIC 2016-2017</h1>
+            <h4>COLONIE DE FOURMIS</h4>
         </div>
     </header>
-
-    <section class="">
-      <!-- configuration simulation -->
-      <section class="config w3-third w3-container">
-      toto
-      <a href="" class="w3-btn w3-theme">ro</a>
-      </section>
-      <!-- écrans de simulation -->
-      <section class="simu w3-container">
-      tata
-      </section>
+    <section class="container w3-center">
+        <!-- *************************************************
+                      configuration simulation
+        ************************************************* -->
+        <section class="config w3-third w3-container">
+            <div class="w3-center">
+              <h3> Paramètres simulation </h3>
+            </div>  
+            <form class="w3-container w3-card-4">
+                <div class="w3-group">
+                    <input class="w3-input" type="text" required>
+                    <label class="w3-label w3-validate">Longueur chemin n°1</label>
+                </div>
+                <div class="w3-group">
+                    <input class="w3-input" type="text" required>
+                    <label class="w3-label w3-validate">Longueur chemin n°2</label>
+                </div>
+                <div class="w3-group">
+                    <input class="w3-input" type="text" required>
+                    <label class="w3-label">Taux apparition fourmis par tour</label>
+                </div>
+                <div class="w3-group">
+                    <input class="w3-input" type="text" required>
+                    <label class="w3-label">Taux évaporation du phéromone par tour</label>
+                </div>
+                <div class="w3-center">
+                  <button type="submit" class="w3-btn w3-theme w3-center">Valider</button>
+                </div>
+                <br/>  
+              </form>
+            <div class="w3-center">
+              <h3> Panneau de controle </h3>
+            </div>
+            <div class="w3-container w3-card-4">
+              <br/>
+              <div class="w3-center">
+                  <button class="w3-btn w3-theme w3-center">Tour suivant</button>
+                  <button class="w3-btn w3-theme w3-center">2 Tours</button>
+                  <button class="w3-btn w3-theme w3-center">10 Tours</button>
+              </div> 
+              <br/> 
+              <hr>
+              <br/>
+              <div class="w3-center">
+                  <button class="w3-btn w3-theme w3-center">Stop</button>
+                  <button class="w3-btn w3-theme w3-center">Extraire le résultat</button>
+              </div> 
+              <br/>
+            </div>  
+        </section>
+        <!-- *************************************************
+                          écrans de simulation 
+        ************************************************* -->
+        <section class="simu w3-half w3-container w3-card-4">
+            tata
+        </section>
     </section>
-
     <!-- Script for Sidenav, Tabs, Accordions, Progress bars and slideshows -->
     <script>
     // Side navigation

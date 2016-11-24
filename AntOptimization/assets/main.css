@@ -1,13 +1,13 @@
 .container{
-
+	height: 100%;
 }
 
 .config{
-	background-color: blue;
+	/*background-color: blue;*/
 	height: 100%;
 }
 
 .simu{
-	background-color: red;
+	/*background-color: red;*/
 	height: 100%;
 }
