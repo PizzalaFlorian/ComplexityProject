@@ -81,7 +81,7 @@
         <!-- *************************************************
                           écrans de simulation 
         ************************************************* -->
-        <section class="simu w3-half w3-container w3-card-4">
+        <section class="simu w3-container w3-card-4">
             tata
         </section>
     </section>
