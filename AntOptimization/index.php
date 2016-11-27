@@ -1,3 +1,28 @@
+<?php
+    include("./class/system.php");
+    session_start();
+    $param = $_SERVER['QUERY_STRING'];
+    if(!empty($_POST)){
+            $_SESSION["p1"] = $_POST["p1"];
+            $_SESSION["p2"] = $_POST["p2"];
+            $_SESSION["tf"] = $_POST["tf"];
+            $_SESSION["te"] = $_POST["te"];
+
+            $_SESSION["simu"] = new System($_POST["p1"],$_POST["p2"],$_POST["tf"],$_POST["te"]);
+    }
+   if(!empty($_SESSION)){
+    if($param == "nt"){
+        $_SESSION["simu"]->iterate();
+    }
+     if($param == "2nt"){
+        $_SESSION["simu"]->multipleIteration(2);
+    }
+    if($param == "10nt"){
+        $_SESSION["simu"]->multipleIteration(10);
+    }
+   }
+?>
+
 <!DOCTYPE html>
 <html>
 <title>Complexité - Fourmis</title>
@@ -32,25 +57,25 @@
         <!-- *************************************************
                       configuration simulation
         ************************************************* -->
-        <section class="config w3-third w3-container">
+        <section class="config w3-container">
             <div class="w3-center">
               <h3> Paramètres simulation </h3>
             </div>  
-            <form class="w3-container w3-card-4">
+            <form action="index.php" method="post" class="w3-container w3-card-4">
                 <div class="w3-group">
-                    <input class="w3-input" type="text" required>
+                    <input class="w3-input" type="text" name="p1" value="<?php if(isset($_SESSION["p1"])){echo $_SESSION["p1"];}else{echo "0";} ?>" required>
                     <label class="w3-label w3-validate">Longueur chemin n°1</label>
                 </div>
                 <div class="w3-group">
-                    <input class="w3-input" type="text" required>
+                    <input class="w3-input" type="text" name="p2" value="<?php if(isset($_SESSION["p2"])){echo $_SESSION["p2"];}else{echo "0";} ?>" required>
                     <label class="w3-label w3-validate">Longueur chemin n°2</label>
                 </div>
                 <div class="w3-group">
-                    <input class="w3-input" type="text" required>
+                    <input class="w3-input" type="text" name="tf" value="<?php if(isset($_SESSION["tf"])){echo $_SESSION["tf"];}else{echo "0";} ?>" required>
                     <label class="w3-label">Taux apparition fourmis par tour</label>
                 </div>
                 <div class="w3-group">
-                    <input class="w3-input" type="text" required>
+                    <input class="w3-input" type="text" name="te" value="<?php if(isset($_SESSION["te"])){echo $_SESSION["te"];}else{echo "0";} ?>" required>
                     <label class="w3-label">Taux évaporation du phéromone par tour</label>
                 </div>
                 <div class="w3-center">
@@ -64,16 +89,9 @@
             <div class="w3-container w3-card-4">
               <br/>
               <div class="w3-center">
-                  <button class="w3-btn w3-theme w3-center">Tour suivant</button>
-                  <button class="w3-btn w3-theme w3-center">2 Tours</button>
-                  <button class="w3-btn w3-theme w3-center">10 Tours</button>
-              </div> 
-              <br/> 
-              <hr>
-              <br/>
-              <div class="w3-center">
-                  <button class="w3-btn w3-theme w3-center">Stop</button>
-                  <button class="w3-btn w3-theme w3-center">Extraire le résultat</button>
+                  <a href="index.php?nt" class="w3-btn w3-theme w3-center">Tour suivant</a>
+                  <a href="index.php?2nt" class="w3-btn w3-theme w3-center">2 Tours</a>
+                  <a href="index.php?10nt" class="w3-btn w3-theme w3-center">10 Tours</a>
               </div> 
               <br/>
             </div>  
@@ -82,7 +100,18 @@
                           écrans de simulation 
         ************************************************* -->
         <section class="simu w3-container w3-card-4">
-            tata
+            <h3> Simulation </h3>
+            <div class="w3-card-4">
+                <?php
+                    if(!empty($_SESSION)){
+                        $_SESSION["simu"]->draw();
+                    }
+                    else{
+                        echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";
+                    }
+                ?>
+            </div>
+            <br>
         </section>
     </section>
     <!-- Script for Sidenav, Tabs, Accordions, Progress bars and slideshows -->
@@ -99,78 +128,6 @@
 
     function w3_close() {
         document.getElementById("mySidenav").style.display = "none";
-    }
-
-    // Tabs
-    function openCity(evt, cityName) {
-        var i;
-        var x = document.getElementsByClassName("city");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-        var activebtn = document.getElementsByClassName("testbtn");
-        for (i = 0; i < x.length; i++) {
-            activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
-        }
-        document.getElementById(cityName).style.display = "block";
-        evt.currentTarget.className += " w3-dark-grey";
-    }
-
-    var mybtn = document.getElementsByClassName("testbtn")[0];
-    mybtn.click();
-
-    // Accordions
-    function myAccFunc(id) {
-        var x = document.getElementById(id);
-        if (x.className.indexOf("w3-show") == -1) {
-            x.className += " w3-show";
-            x.previousElementSibling.className += " w3-dark-grey";
-        } else {
-            x.className = x.className.replace(" w3-show", "");
-            x.previousElementSibling.className =
-                x.previousElementSibling.className.replace(" w3-dark-grey", "");
-        }
-    }
-
-    // Slideshows
-    var slideIndex = 1;
-
-    function plusDivs(n) {
-        slideIndex = slideIndex + n;
-        showDivs(slideIndex);
-    }
-
-    function showDivs(n) {
-        var x = document.getElementsByClassName("mySlides");
-        if (n > x.length) {
-            slideIndex = 1
-        }
-        if (n < 1) {
-            slideIndex = x.length
-        };
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-        x[slideIndex - 1].style.display = "block";
-    }
-
-    showDivs(1);
-
-    // Progress Bars
-    function move() {
-        var elem = document.getElementById("myBar");
-        var width = 1;
-        var id = setInterval(frame, 10);
-
-        function frame() {
-            if (width == 100) {
-                clearInterval(id);
-            } else {
-                width++;
-                elem.style.width = width + '%';
-                document.getElementById("demoprgr").innerHTML = width * 1 + '%';
-            }
-        }
     }
     </script>
 </body>

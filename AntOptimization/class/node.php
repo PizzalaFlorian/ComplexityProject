@@ -1,14 +1,14 @@
 <?php
 
 class Node{
-		private $listAller[];
-		private $listRetour[];
-		private $pheromone;
+		public $listAller;
+		public $listRetour;
+		public $pheromone;
 		private $taux_evaporation;
 
 		public function __construct($taux_evaporation){
-			$this->listAller = new array();
-			$this->listRetour = new array();
+			$this->listAller = 0;
+			$this->listRetour = 0;
 			$this->pheromone = 0;
 			$this->taux_evaporation = $taux_evaporation;
 		}
@@ -42,34 +42,43 @@ class Node{
 		}
 
 		public function resetListAller(){
-			$this->listAller = new array();
+			$this->listAller = 0;
 		}
 
 		public function resetListRetour(){
-			$this->listRetour = new array();
+			$this->listRetour = 0;
 		}
 
-		public function getNumberAntAller(){
-			return count($this->listAller);
+		public function addAller($value){
+			$this->listAller += $value;
 		}
 
-		public function getNumberAntRetour(){
-			return count($this->listRetour);
+		public function addRetour($value){
+			$this->listRetour += $value;
+		}
+
+		public function addph($value){
+			$this->pheromone += $value;
 		}
 
 		public function evaporate(){
-
+			if($this->pheromone > 0 ){
+				$this->pheromone = $this->pheromone - $this->taux_evaporation;
+				if($this->pheromone < 0){
+					$this->pheromone = 0;
+				}
+			}
 		}
 
 		public function isAllerEmpty(){
-			if(count($this->listAller) == 0){
+			if($this->listAller == 0){
 				return true;
 			}
 			return false;
 		}
 
 		public function isRetourEmpty(){
-			if(count($this->listAller) == 0){
+			if($this->listRetour == 0){
 				return true;
 			}
 			return false;

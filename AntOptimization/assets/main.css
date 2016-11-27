@@ -1,13 +1,42 @@
 .container{
 	height: 100%;
+	display: flex;
+	flex-direction: row;
 }
 
 .config{
 	/*background-color: blue;*/
 	height: 100%;
+	width: 25%;
 }
 
 .simu{
 	/*background-color: red;*/
 	height: 100%;
+	width: 70%;
+}
+
+.schemaCenter{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.nid{
+	border: 1px solid grey;
+	padding: 20px;
+}
+
+.food{
+	/*background-color: red;*/
+}
+.path{
+	border: 1px solid grey;
+}
+.path td, .food td{
+	border: 1px solid grey;
+}
+
+input{
+	text-align: center !important;
 }
