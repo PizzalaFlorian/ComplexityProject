@@ -4,7 +4,8 @@ class City{
 	private $name;
 	private $pheromone;
 	private $tauxEvaporation;
-	public $antList;
+	public $antList;//liste des fourmis éligible au départ
+	public $stockage;//liste de stockage
 
 	public function __construct($name,$tauxEvaporation){
 		$this->name = $name;
