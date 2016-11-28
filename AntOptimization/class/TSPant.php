@@ -30,6 +30,10 @@ class TSPant{
 		return $listEligible;
 	}
 
+	public function chooseDest($source,$listVille){
+		
+	}
+
 	public function addCout($val){
 		$this->score += $val;
 	}

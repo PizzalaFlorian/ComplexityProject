@@ -20,7 +20,6 @@
 		public function __construct($tauxEvaporation,$tauxFourmirs){
 			$this->matrixAdj = array();
 			$this->listVille = array();
-			$this->villeSource = "NA";
 			$this->tauxFourmirs = $tauxFourmirs;
 			$this->tauxEvaporation = $tauxEvaporation;
 			$this->NbVille = 0;
@@ -51,7 +50,7 @@
 		//déplace les fourmis dans la liste de stockage du nouveau noeud
 		public function deplacerLesFourmis(){
 			for($i=1; $i < count($this->listVille) ; $i++) {//utilise les indices pour acces rapide au tableau
-				$listVoisins = $this->rechercheVoisin($i);
+				$listVoisins = $this->listVille;
 				foreach ($this->listVille[$i]->antList as $ant) {
 					$listDest = $ant->villeEligible($listVoisins);//traiter les cas liste vide
 					if(!isset($listDest) || empty($listDest)){
@@ -66,7 +65,7 @@
 						}
 					}
 					else{//il y as des villes à visité
-						$villeDest = $ant->chooseDest($listDest);
+						$villeDest = $ant->chooseDest($i,$listDest);
 						$ant->visite($villeDest,$this->matrixAdj[$i][$villeDest]);
 						$villeDest->stockage[] = clone $ant;
 						$villeDest->incrPheromone(1);
@@ -101,12 +100,14 @@
 
 		//ajoute des nouvelles fourmis au système
 		public function reinject(){
-			$listVoisins = $this->rechercheVoisin($this->villeSource);
-			$listDest = $ant->villeEligible($listVoisins);//traiter les cas liste vide
-			$villeDest = $ant->chooseDest($listDest);
-			$ant->visite($villeDest,$this->matrixAdj[0][$villeDest]);
-			$villeDest->stockage[] = new TSPant(0);
-			$villeDest->incrPheromone(1);
+			$listVoisins = $this->listVille;
+			for($i=0;$i<$this->tauxFourmirs;$i++){
+				$ant = new TSPant(0);
+				$villeDest = $ant->chooseDest(0,$listVoisins);
+				$ant->visite($villeDest,$this->matrixAdj[0][$villeDest]);
+				$villeDest->stockage[] = $ant;
+				$villeDest->incrPheromone(1);
+			}
 		}
 
 		//fonction d'évaporation

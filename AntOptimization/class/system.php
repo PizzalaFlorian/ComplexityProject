@@ -129,7 +129,7 @@
 
 		public function draw(){
 			
-			echo "<h4> Tour n° ".$this->tour."<br/></h4><hr><br/>";
+			echo "<h4> Tour n° ".$this->tour."</h4><hr>";
 			echo "Chemin 1<br/>";
 			$this->path1->draw();
 			echo "<br/>";

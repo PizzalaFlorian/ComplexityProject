@@ -136,9 +136,14 @@
 			for($i=0; $i<$this->lenght;$i++){
 				echo "<td>n° ".$i."</td>";
 			}
-			echo "</tr><tr><td> Fourmis : </td>";
+			echo "</tr><tr><td> Fourmis Aller: </td>";
 			foreach ($this->nodes as $n) {
-				$sum = $n->listAller + $n->listRetour;
+				$sum = $n->listAller;
+				echo "<td>".$sum."</td>";
+			}
+			echo "</tr><tr><td> Fourmis Retour: </td>";
+			foreach ($this->nodes as $n) {
+				$sum = $n->listRetour;
 				echo "<td>".$sum."</td>";
 			}
 			echo "</tr><tr><td> Pheromone : </td>";
