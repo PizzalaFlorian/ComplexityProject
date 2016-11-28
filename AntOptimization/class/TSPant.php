@@ -3,18 +3,19 @@
 class TSPant{
 	private $trajet;
 	private $source;
+	private $score;
 	private $nombreVilleVisité;
-	private $tour;
 
 	public function __construct($source){
 		$this->trajet = array();
 		$this->trajet[$souce] = true;
 		$this->source = $source;
+		$this->score = 0;
 		$this->nombreVilleVisité = 1;//On as visité la source
-		$this->tour = 0;
 	}
 
-	public function visite($nomVille){
+	public function visite($nomVille,$cout){
+		$this->score += $cout;
 		$this->trajet[$nomVille] = true;
 		$this->nombreVilleVisité++;
 	}
@@ -27,6 +28,18 @@ class TSPant{
 			}
 		}
 		return $listEligible;
+	}
+
+	public function addCout($val){
+		$this->score += $val;
+	}
+
+	public function getScore(){
+		return $this->score;
+	}
+
+	public function getTrajet(){
+		return $this->trajet;
 	}
 
 	public function getNombreVilleVisite(){

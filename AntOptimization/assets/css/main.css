@@ -36,7 +36,16 @@
 .path td, .food td{
 	border: 1px solid grey;
 }
+a{
+	margin: 2px !important;
+}
 
 input{
 	text-align: center !important;
+}
+h3{
+	margin: 0 !important;
+}
+.w3-group{
+	margin:5px !important;
 }
