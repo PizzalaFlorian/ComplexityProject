@@ -71,16 +71,21 @@
 		}
 
 		public function ReinjectAnts(){
+
 			$p1 = $this->path1->getPheromoneEntree();
 			$p2 = $this->path2->getPheromoneEntree();
+
 			$seuil = 0;
 			if(($p1 + $p2) != 0){
 				$seuil = intval(($p1 * 100)/($p1 + $p2));
+				if($seuil == 0){
+					$seuil = 1;
+				}
 			}
 			if($seuil == 0){
 				$seuil = 50;
 			}
-			
+
 			for($i=0;$i<$this->taux_apparition_fourmis;$i++) {
 				$r = rand(1,100);
 				if($r < $seuil){

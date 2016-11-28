@@ -99,7 +99,7 @@
         ************************************************* -->
         <section class="simu w3-container w3-card-4">
             <h3> Simulation </h3>
-            <div class="w3-card-4">
+            <div class="w3-card-4 fenSim">
                 <?php
                     if(!empty($_SESSION)){
                         $_SESSION["simu"]->draw();
