@@ -1,7 +1,7 @@
 <?php
 
-	require("./TSPant.php");
-	require("./city.php");
+	require("TSPant.php");
+	require("city.php");
 
 	class TSPsystem{
 		private $matrixAdj;
@@ -11,40 +11,50 @@
 
 		private $tauxEvaporation;
 		private $tauxFourmirs;
+		private $maxCout;
+		private $maxDim;
 
 		private $tour;
 
 		private $bestTrajet;//liste des ville du meilleur trajet
 		private $bestScore;//score du meilleur trajet
 
-		public function __construct($tauxEvaporation,$tauxFourmirs){
+		public function __construct($stringVilles,$tauxEvaporation,$tauxFourmirs,$maxCout,$maxDim){
 			$this->matrixAdj = array();
 			$this->listVille = array();
 			$this->tauxFourmirs = $tauxFourmirs;
 			$this->tauxEvaporation = $tauxEvaporation;
 			$this->NbVille = 0;
 			$this->tour = 0;
+			$this->bestScore = 0;
+			$this->bestTrajet = 0;
+			$this->maxCout = $maxCout;
+			$this->maxDim = $maxDim;
+
+			$this->setListVille($stringVilles);
+			$this->constuctMatrix();
 		}
 
 		public function setListVille($stringVilles){
 			$list = explode(";",$stringVilles);
 			foreach ($list as $ville) {
-				$city = new City($ville,$this->tauxEvaporation);
+				$city = new City($ville,$this->tauxEvaporation,$this->maxDim);
 				$this->listVille[] = $city;
 				$this->NbVille++;
 			}
 		}
 
 		public function constuctMatrix(){
-			for($i=0, $i < $this->NbVille; $i++){
-				for ($j=0; $j < ; $j++) {
-					$matrixAdj[$i][$j] = 0;
+			for($i=0; $i < $this->NbVille; $i++){
+				$this->matrixAdj[$i][$i] = -1;
+			}
+			for($i=0; $i < $this->NbVille; $i++){
+				for ($j=($i+1); $j < $this->NbVille ; $j++) {
+					$r = rand(1,$this->maxCout);
+					$this->matrixAdj[$i][$j] = $r;
+					$this->matrixAdj[$j][$i] = $r;
 				}
 			}
-		}
-
-		public function rechercheVoisin($source){
-
 		}
 
 		//déplace les fourmis dans la liste de stockage du nouveau noeud
@@ -82,18 +92,18 @@
 					$this->bestScore = $ant->getScore;
 				}
 			}
-			$this->listVille[0]->stockage = new array();
+			$this->listVille[0]->stockage = array();
 		}
 
 		//vide la liste active swap la liste de stokage dans la liste active
 		public function transmuterLesListes(){
 			foreach ($this->listVille as $ville) {
 				if(!empty($ville->antList)){
-					$ville->antList = new array();
+					$ville->antList = array();
 				}
 				if( !empty($ville->stockage)){
 					$ville->antList = array_merge($ville->antList,$ville->stockage);
-					$ville->stockage = new array();
+					$ville->stockage = array();
 				}
 			}
 		}
@@ -112,7 +122,9 @@
 
 		//fonction d'évaporation
 		public function evaporate(){
-
+			foreach ($listVille as $ville) {
+				$ville->evaporate;
+			}
 		}
 
 		//effectue la phase de mouvement
@@ -137,6 +149,16 @@
 		public function multipleRun($val){
 			for($i=0;$i<$val;$i++){
 				$this->run();
+			}
+		}
+
+		public function doOneTrip(){
+			$this->multipleRun($this->NbVille);
+		}
+
+		public function doNTrio($N){
+			for ($i=0; $i < $N ; $i++) { 
+				$this->doOneTrip();
 			}
 		}
 	}
