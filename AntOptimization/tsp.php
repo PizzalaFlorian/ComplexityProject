@@ -1,16 +1,33 @@
 <?php
+
     include("./class/TSPsystem.php");
     session_start();
+    //var_dump($_POST);
     $param = $_SERVER['QUERY_STRING'];
     if(!empty($_POST)){
-      $_SESSION["list"] = $_POST["list"];
-      $_SESSION["tf"] = $_POST["tf"];
-      $_SESSION["te"] = $_POST["te"];
-      $_SESSION["cout"] = $_POST["cout"];
-      $_SESSION["tsp"] = new TSPsystem($_POST["list"],$_POST["te"],$_POST["tf"],$_POST["cout"],700);
+      if(isset($_POST["list"])){
+        $_SESSION["list"] = $_POST["list"];
+        $_SESSION["tsp"] = new TSPsystem($_POST["list"],700);
+      }
+      else{
+        $_SESSION["te"] = $_POST["te"];
+        $_SESSION["tf"] = $_POST["tf"];
+        $_SESSION["tsp"]->setParam($_POST["te"],$_POST["tf"]);
+      }
     }
-   if(!empty($_SESSION)){
-
+   if(!empty($_SESSION["tsp"])){
+      if($param == "reset"){
+        $_SESSION["tsp"]->reset();
+      }
+      if($param == "tour"){
+        $_SESSION["tsp"]->run();
+      }
+      if($param == "voyage"){
+        $_SESSION["tsp"]->doOneTrip();
+      }
+      if($param == "10voyage"){
+        $_SESSION["tsp"]->doNTrip(10);
+      }
    }
 
 ?>
@@ -55,17 +72,21 @@
                     <input class="w3-input" type="text" name="list" value="<?php if(isset($_SESSION["list"])){echo $_SESSION["list"];}else{echo "0";} ?>" required>
                     <label class="w3-label w3-validate">Liste Ville (séparator ";")</label>
                 </div>
+                <div class="w3-center">
+                  <button type="submit" class="w3-btn w3-theme w3-center">Valider</button>
+                </div>
+                <br/>  
+              </form>
+            <div class="w3-center">
+            <hr>
+            <form action="tsp.php" method="post" class="w3-container w3-card-4">
                 <div class="w3-group">
-                    <input class="w3-input" type="text" name="tf" value="<?php if(isset($_SESSION["tf"])){echo $_SESSION["tf"];}else{echo "0";} ?>" required>
+                    <input class="w3-input" type="number" name="tf" value="<?php if(isset($_SESSION["tf"])){echo $_SESSION["tf"];}else{echo "0";} ?>" required>
                     <label class="w3-label">Taux apparition fourmis par tour</label>
                 </div>
                 <div class="w3-group">
-                    <input class="w3-input" type="text" name="te" value="<?php if(isset($_SESSION["te"])){echo $_SESSION["te"];}else{echo "0";} ?>" required>
+                    <input class="w3-input" type="number" name="te" value="<?php if(isset($_SESSION["te"])){echo $_SESSION["te"];}else{echo "0";} ?>" required>
                     <label class="w3-label">Taux évaporation du phéromone par tour</label>
-                </div>
-                <div class="w3-group">
-                    <input class="w3-input" type="text" name="cout" value="<?php if(isset($_SESSION["cout"])){echo $_SESSION["cout"];}else{echo "0";} ?>" required>
-                    <label class="w3-label">maximun de cout d'un voyage</label>
                 </div>
                 <div class="w3-center">
                   <button type="submit" class="w3-btn w3-theme w3-center">Valider</button>
@@ -78,9 +99,11 @@
             <div class="w3-container w3-card-4">
               <br/>
               <div class="w3-center">
-                  <a href="index.php?nt" class="w3-btn w3-theme w3-center">Tour suivant</a>
-                  <a href="index.php?2nt" class="w3-btn w3-theme w3-center">2 Tours</a>
-                  <a href="index.php?10nt" class="w3-btn w3-theme w3-center">10 Tours</a>
+                  <a href="tsp.php?tour" class="w3-btn w3-theme w3-center">Faire un tour</a>
+                  <a href="tsp.php?voyage" class="w3-btn w3-theme w3-center">Faire un voyage</a>
+                  <a href="tsp.php?10voyages" class="w3-btn w3-theme w3-center">Faire 10 voyages</a>
+                  <hr>
+                  <a href="tsp.php?reset" class="w3-btn w3-theme w3-center">Reset Simulation</a>
               </div> 
               <br/>
             </div>  
@@ -98,7 +121,7 @@
                     else{
                         echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";
                     }
-                    
+                    var_dump($_SESSION["tsp"]->listVille)
                 ?>
             </div>
             <br>

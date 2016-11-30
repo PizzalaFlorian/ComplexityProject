@@ -5,13 +5,12 @@
 
 	class TSPsystem{
 		private $matrixAdj;
-		private $listVille;//source est la première ville
+		public $listVille;//source est la première ville
 
 		private $NbVille;
 
 		private $tauxEvaporation;
 		private $tauxFourmirs;
-		private $maxCout;
 		private $maxDim;
 
 		private $tour;
@@ -19,40 +18,49 @@
 		private $bestTrajet;//liste des ville du meilleur trajet
 		private $bestScore;//score du meilleur trajet
 
-		public function __construct($stringVilles,$tauxEvaporation,$tauxFourmirs,$maxCout,$maxDim){
+		public function __construct($stringVilles,$maxDim){
 			$this->matrixAdj = array();
 			$this->listVille = array();
-			$this->tauxFourmirs = $tauxFourmirs;
-			$this->tauxEvaporation = $tauxEvaporation;
+			$this->tauxFourmirs = 0;
+			$this->tauxEvaporation = 0;
 			$this->NbVille = 0;
 			$this->tour = 0;
 			$this->bestScore = 0;
 			$this->bestTrajet = 0;
-			$this->maxCout = $maxCout;
 			$this->maxDim = $maxDim;
 
 			$this->setListVille($stringVilles);
 			$this->constuctMatrix();
 		}
 
+		public function setParam($tauxEvaporation,$tauxFourmirs){
+			$this->tauxFourmirs = $tauxFourmirs;
+			$this->tauxEvaporation = $tauxEvaporation;
+			foreach ($this->listVille as $ville) {
+				$ville->setEvap($tauxEvaporation);
+			}
+		}
+
 		public function setListVille($stringVilles){
 			$list = explode(";",$stringVilles);
+			$count=0;
 			foreach ($list as $ville) {
 				if($ville!=""){
-					$city = new City($ville,$this->tauxEvaporation,$this->maxDim);
+					$city = new City($ville,$count,$this->tauxEvaporation,$this->maxDim);
 					$this->listVille[] = $city;
 					$this->NbVille++;
+					$count++;
 				}
 			}
 		}
 
 		public function constuctMatrix(){
 			for($i=0; $i < $this->NbVille; $i++){
-				$this->matrixAdj[$i][$i] = -1;
+				$this->matrixAdj[$i][$i] = 0;
 			}
 			for($i=0; $i < $this->NbVille; $i++){
 				for ($j=($i+1); $j < $this->NbVille ; $j++) {
-					$r = rand(1,$this->maxCout);
+					$r = intval(sqrt(pow($this->listVille[$i]->x - $this->listVille[$j]->x,2) + pow($this->listVille[$i]->y - $this->listVille[$j]->y,2)));
 					$this->matrixAdj[$i][$j] = $r;
 					$this->matrixAdj[$j][$i] = $r;
 				}
@@ -68,8 +76,8 @@
 					if(!isset($listDest) || empty($listDest)){
 						if($ant->getNombreVilleVisite() == $NbVille){//cas elle as tout visité
 							//retour à la case départ
-							$ant->addCout($this->matrixAdj[$i][$villeDest]);
-							$this->listVille[0]->stockage = clone $ant;
+							$ant->addCout($this->matrixAdj[$i][0]);
+							$this->listVille[0]->stockage = $ant;
 						}
 						else{//cas elle est bloqué
 							var_dump($ant);
@@ -79,7 +87,7 @@
 					else{//il y as des villes à visité
 						$villeDest = $ant->chooseDest($i,$listDest);
 						$ant->visite($villeDest,$this->matrixAdj[$i][$villeDest]);
-						$villeDest->stockage[] = clone $ant;
+						$villeDest->stockage[] = $ant;
 						$villeDest->incrPheromone(1);
 					}
 				}
@@ -90,8 +98,8 @@
 		public function recupResultats(){
 			foreach ($this->listVille[0]->stockage as $ant) {
 				if($ant->getScore() < $this->bestScore){
-					$this->bestTrajet = clone $ant->getTrajet();
-					$this->bestScore = $ant->getScore;
+					$this->bestTrajet = $ant->getTrajet();
+					$this->bestScore = $ant->getScore();
 				}
 			}
 			$this->listVille[0]->stockage = array();
@@ -117,15 +125,15 @@
 				$ant = new TSPant(0);
 				$villeDest = $ant->chooseDest(0,$listVoisins);
 				$ant->visite($villeDest,$this->matrixAdj[0][$villeDest]);
-				$villeDest->stockage[] = $ant;
-				$villeDest->incrPheromone(1);
+				$this->listVille[$villeDest]->stockage[] = $ant;
+				$this->listVille[$villeDest]->incrPheromone(1);
 			}
 		}
 
 		//fonction d'évaporation
 		public function evaporate(){
-			foreach ($listVille as $ville) {
-				$ville->evaporate;
+			foreach ($this->listVille as $ville) {
+				$ville->evaporate();
 			}
 		}
 
@@ -137,7 +145,7 @@
 		}
 
 		public function run(){
-			if($tour==0){
+			if($this->tour==0){
 				$this->reinject();
 			}
 			else{
@@ -158,13 +166,22 @@
 			$this->multipleRun($this->NbVille);
 		}
 
-		public function doNTrio($N){
+		public function doNTrip($N){
 			for ($i=0; $i < $N ; $i++) { 
 				$this->doOneTrip();
 			}
 		}
 
+		public function reset(){
+			foreach ($this->listVille as $ville) {
+				$ville->resetSimu();
+			}
+			$this->bestScore = 0;
+			$this->bestTrajet = array();
+		}
+
 		public function drawTableVille(){
+			echo '<div>';
 			echo '<table class="superTable">
 					<tr>
 						<td> Ville </td>
@@ -200,6 +217,7 @@
 				echo '</tr>';
 			}
 			echo '</table>';
+			echo '</div>';
 
 		}
 
