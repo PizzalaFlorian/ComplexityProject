@@ -32,52 +32,6 @@
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3-theme-black.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
-<script src="./assets/lib/sigma.js-1.2.0/src/sigma.core.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/conrad.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/utils/sigma.utils.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/utils/sigma.polyfills.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/sigma.settings.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/classes/sigma.classes.dispatcher.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/classes/sigma.classes.configurable.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/classes/sigma.classes.graph.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/classes/sigma.classes.camera.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/classes/sigma.classes.quad.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/classes/sigma.classes.edgequad.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/captors/sigma.captors.mouse.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/captors/sigma.captors.touch.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/sigma.renderers.canvas.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/sigma.renderers.webgl.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/sigma.renderers.svg.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/sigma.renderers.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/webgl/sigma.webgl.edges.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.labels.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.edges.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/svg/sigma.svg.utils.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/svg/sigma.svg.nodes.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/svg/sigma.svg.edges.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/svg/sigma.svg.edges.curve.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/svg/sigma.svg.labels.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/renderers/svg/sigma.svg.hovers.def.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/middlewares/sigma.middlewares.rescale.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/middlewares/sigma.middlewares.copy.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/misc/sigma.misc.animation.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/misc/sigma.misc.bindEvents.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/misc/sigma.misc.bindDOMEvents.js"></script>
-<script src="./assets/lib/sigma.js-1.2.0/src/misc/sigma.misc.drawHovers.js"></script>
 <!-- import perso -->
 <link rel="stylesheet" href="assets/css/main.css">
 
@@ -155,66 +109,11 @@
                     //     echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";
                     // }
                     
-                    // $tsp = new TSPsystem("A;B;C;D",2,10,100,500);
+                    $tsp = new TSPsystem("A;B;C;D",2,10,100,500);
                     // var_dump($tsp);
+                    $tsp->draw();
                 ?>
-                <div id="container">
-                  <style>
-                    #graph-container {
-                      top: 0;
-                      bottom: 0;
-                      left: 0;
-                      right: 0;
-                      position: absolute;
-                    }
-                  </style>
-                  <div id="graph-container"></div>
-                </div>
-                <script>
-                /**
-                 * This is a basic example on how to instantiate sigma. A random graph is
-                 * generated and stored in the "graph" variable, and then sigma is instantiated
-                 * directly with the graph.
-                 *
-                 * The simple instance of sigma is enough to make it render the graph on the on
-                 * the screen, since the graph is given directly to the constructor.
-                 */
-                var i,
-                    s,
-                    N = 100,
-                    E = 500,
-                    g = {
-                      nodes: [],
-                      edges: []
-                    };
-
-                // Generate a random graph:
-                for (i = 0; i < N; i++)
-                  g.nodes.push({
-                    id: 'n' + i,
-                    label: 'Node ' + i,
-                    x: Math.random(),
-                    y: Math.random(),
-                    size: Math.random(),
-                    color: '#666'
-                  });
-
-                for (i = 0; i < E; i++)
-                  g.edges.push({
-                    id: 'e' + i,
-                    source: 'n' + (Math.random() * N | 0),
-                    target: 'n' + (Math.random() * N | 0),
-                    size: Math.random(),
-                    color: '#ccc'
-                  });
-
-                // Instantiate sigma:
-                s = new sigma({
-                  graph: g,
-                  container: 'graph-container'
-                });
-                </script>
-
+               
             </div>
             <br>
         </section>
