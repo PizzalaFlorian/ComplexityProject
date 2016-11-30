@@ -179,6 +179,28 @@
 					</tr>';
 			}
 			echo '</table>';
+			echo '<br/><br/>';
+			echo '<table class="superTable">';
+			echo '<tr>';
+			echo '<td> </td>';
+			for ($i=0; $i < $this->NbVille ; $i++) {
+				echo '<td>'.$this->listVille[$i]->getName().'</td>';
+			}
+			echo '</tr>';
+			for ($i=0; $i < $this->NbVille ; $i++) { 
+				echo '<tr>';
+				echo '<td>'.$this->listVille[$i]->getName().'</td>';
+				for ($j=0; $j < $this->NbVille; $j++) { 
+					if($j == $i){
+						echo '<td>#</td>';
+					}else{
+						echo '<td>'.$this->matrixAdj[$i][$j].'</td>';
+					}
+				}
+				echo '</tr>';
+			}
+			echo '</table>';
+
 		}
 
 		public function drawResultat(){
