@@ -164,16 +164,8 @@
 
 		public function draw()
 		{
-			// $canvas = imagecreatetruecolor(500, 500);
-			// $red = imagecolorallocate($canvas, 231, 29, 29);
-			// $black = imagecolorallocate($canvas, 0, 0, 0);
-			// $grey = imagecolorallocate($canvas, 130, 130, 130);
-			// $green = imagecolorallocate($canvas, 73, 159, 64);
 
-			// //header('Content-Type: image/jpeg');
-
-			// imagejpeg($canvas);
-			// imagedestroy($canvas);
+			
 		}
 	}
 
