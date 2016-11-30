@@ -64,3 +64,13 @@ canvas{
   image-rendering: pixelated;                 /* Awesome future-browsers       */
   -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
 }
+
+.superTable, .superTable td{
+	border:1px solid grey;
+}
+
+.fb{
+	display: flex;
+	flex-direction: row;
+	background-color: red;
+}

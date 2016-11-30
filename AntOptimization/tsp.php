@@ -3,6 +3,11 @@
     session_start();
     $param = $_SERVER['QUERY_STRING'];
     if(!empty($_POST)){
+      $_SESSION["list"] = $_POST["list"];
+      $_SESSION["tf"] = $_POST["tf"];
+      $_SESSION["te"] = $_POST["te"];
+      $_SESSION["cout"] = $_POST["cout"];
+      $_SESSION["tsp"] = new TSPsystem($_POST["list"],$_POST["te"],$_POST["tf"],$_POST["cout"],700);
     }
    if(!empty($_SESSION)){
 
@@ -45,14 +50,10 @@
             <div class="w3-center">
               <h3> Paramètres simulation </h3>
             </div>  
-            <form action="index.php" method="post" class="w3-container w3-card-4">
+            <form action="tsp.php" method="post" class="w3-container w3-card-4">
                 <div class="w3-group">
-                    <input class="w3-input" type="text" name="p1" value="<?php if(isset($_SESSION["p1"])){echo $_SESSION["p1"];}else{echo "0";} ?>" required>
-                    <label class="w3-label w3-validate">Longueur chemin n°1</label>
-                </div>
-                <div class="w3-group">
-                    <input class="w3-input" type="text" name="p2" value="<?php if(isset($_SESSION["p2"])){echo $_SESSION["p2"];}else{echo "0";} ?>" required>
-                    <label class="w3-label w3-validate">Longueur chemin n°2</label>
+                    <input class="w3-input" type="text" name="list" value="<?php if(isset($_SESSION["list"])){echo $_SESSION["list"];}else{echo "0";} ?>" required>
+                    <label class="w3-label w3-validate">Liste Ville (séparator ";")</label>
                 </div>
                 <div class="w3-group">
                     <input class="w3-input" type="text" name="tf" value="<?php if(isset($_SESSION["tf"])){echo $_SESSION["tf"];}else{echo "0";} ?>" required>
@@ -61,6 +62,10 @@
                 <div class="w3-group">
                     <input class="w3-input" type="text" name="te" value="<?php if(isset($_SESSION["te"])){echo $_SESSION["te"];}else{echo "0";} ?>" required>
                     <label class="w3-label">Taux évaporation du phéromone par tour</label>
+                </div>
+                <div class="w3-group">
+                    <input class="w3-input" type="text" name="cout" value="<?php if(isset($_SESSION["cout"])){echo $_SESSION["cout"];}else{echo "0";} ?>" required>
+                    <label class="w3-label">maximun de cout d'un voyage</label>
                 </div>
                 <div class="w3-center">
                   <button type="submit" class="w3-btn w3-theme w3-center">Valider</button>
@@ -87,16 +92,13 @@
             <h3> Simulation </h3>
             <div class="w3-card-4 fenSim">
                 <?php
-                    // if(!empty($_SESSION)){
-                    //     $_SESSION["simu"]->draw();
-                    // }
-                    // else{
-                    //     echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";
-                    // }
+                    if(!empty($_SESSION["tsp"])){
+                        $_SESSION["tsp"]->draw();
+                    }
+                    else{
+                        echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";
+                    }
                     
-                    $tsp = new TSPsystem("S;A;B;C;D",2,10,100,700);
-                    // var_dump($tsp);
-                    $tsp->draw();
                 ?>
             </div>
             <br>

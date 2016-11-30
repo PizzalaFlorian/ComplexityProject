@@ -38,9 +38,11 @@
 		public function setListVille($stringVilles){
 			$list = explode(";",$stringVilles);
 			foreach ($list as $ville) {
-				$city = new City($ville,$this->tauxEvaporation,$this->maxDim);
-				$this->listVille[] = $city;
-				$this->NbVille++;
+				if($ville!=""){
+					$city = new City($ville,$this->tauxEvaporation,$this->maxDim);
+					$this->listVille[] = $city;
+					$this->NbVille++;
+				}
 			}
 		}
 
@@ -162,15 +164,38 @@
 			}
 		}
 
-		public function draw()
-		{
-			echo '<canvas id="myCanvas" width='.$this->maxDim.' height='.$this->maxDim.' style="width:'.$this->maxDim.'px;height:'.$this->maxDim.'px"></canvas>';
-			$this->drawGraph();
+		public function drawTableVille(){
+			echo '<table class="superTable">
+					<tr>
+						<td> Ville </td>
+						<td> Pheromone </td>
+					</tr>
+			';
+			foreach ($this->listVille as $ville) {
+				echo '
+					<tr>
+						<td>'.$ville->getName().'</td>
+						<td>'.$ville->getPheromone().'</td>
+					</tr>';
+			}
+			echo '</table>';
+		}
+
+		public function drawResultat(){
 
 		}
 
-		public function drawGraph(){
+		public function draw()
+		{
+			echo '<div class="fb">';
+				$this->drawTableVille();
+				echo '<canvas id="myCanvas" width='.$this->maxDim.' height='.$this->maxDim.' style="width:'.$this->maxDim.'px;height:'.$this->maxDim.'px"></canvas>';
+				$this->drawGraph();
+			echo '</div>';
+			$this->drawResultat();
+		}
 
+		public function drawGraph(){
 			echo '<script>
 			var canvas = document.getElementById("myCanvas");
 			console.log(canvas);
