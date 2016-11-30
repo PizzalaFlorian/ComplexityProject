@@ -164,9 +164,50 @@
 
 		public function draw()
 		{
+			echo '<canvas id="myCanvas" width='.$this->maxDim.' height='.$this->maxDim.' style="width:'.$this->maxDim.'px;height:'.$this->maxDim.'px"></canvas>';
+			$this->drawGraph();
 
-			
 		}
+
+		public function drawGraph(){
+
+			echo '<script>
+			var canvas = document.getElementById("myCanvas");
+			console.log(canvas);
+			var canvasWidth = canvas.width;
+			var canvasHeight = canvas.height;
+			var ctx = canvas.getContext("2d");
+
+			function city(x, y, ctx, lettre){
+				ctx.imageSmoothingEnabled = false;
+				ctx.beginPath();
+				ctx.arc(x,y,10,0,2*Math.PI);
+				ctx.fillStyle="black";
+				ctx.fill();
+				ctx.stroke();
+
+				ctx.beginPath();
+				ctx.font="20px Georgia";
+				ctx.fillStyle="white";
+				ctx.fillText(lettre,x-7,y+7);
+				ctx.stroke();
+			}';
+			for ($i=0; $i < $this->NbVille; $i++) { 
+				for ($j=$i+1; $j <$this->NbVille ; $j++) { 
+					echo '	ctx.beginPath();
+							ctx.moveTo('.$this->listVille[$i]->x.','.$this->listVille[$i]->y.');
+							ctx.lineTo('.$this->listVille[$j]->x.','.$this->listVille[$j]->y.');
+							ctx.stroke();';
+				}
+			}
+			foreach ($this->listVille as $ville) {
+				echo 'city('.$ville->x.','.$ville->y.',ctx,"'.$ville->getName().'");';
+			}
+			
+			echo '</script>';
+		}
+
+
 	}
 
 ?>

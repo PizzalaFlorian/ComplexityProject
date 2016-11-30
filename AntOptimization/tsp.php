@@ -3,23 +3,9 @@
     session_start();
     $param = $_SERVER['QUERY_STRING'];
     if(!empty($_POST)){
-            // $_SESSION["p1"] = $_POST["p1"];
-            // $_SESSION["p2"] = $_POST["p2"];
-            // $_SESSION["tf"] = $_POST["tf"];
-            // $_SESSION["te"] = $_POST["te"];
-
-            // $_SESSION["simu"] = new System($_POST["p1"],$_POST["p2"],$_POST["tf"],$_POST["te"]);
     }
    if(!empty($_SESSION)){
-    // if($param == "nt"){
-    //     $_SESSION["simu"]->iterate();
-    // }
-    //  if($param == "2nt"){
-    //     $_SESSION["simu"]->multipleIteration(2);
-    // }
-    // if($param == "10nt"){
-    //     $_SESSION["simu"]->multipleIteration(10);
-    // }
+
    }
 
 ?>
@@ -100,7 +86,6 @@
         <section class="simu w3-container w3-card-4">
             <h3> Simulation </h3>
             <div class="w3-card-4 fenSim">
-                test
                 <?php
                     // if(!empty($_SESSION)){
                     //     $_SESSION["simu"]->draw();
@@ -109,11 +94,10 @@
                     //     echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";
                     // }
                     
-                    $tsp = new TSPsystem("A;B;C;D",2,10,100,500);
+                    $tsp = new TSPsystem("S;A;B;C;D",2,10,100,700);
                     // var_dump($tsp);
                     $tsp->draw();
                 ?>
-               
             </div>
             <br>
         </section>
@@ -134,6 +118,8 @@
         document.getElementById("mySidenav").style.display = "none";
     }
     </script>
+
+    <!-- <script type="text/javascript" src="./assets/js/canvas.js"></script> -->
 </body>
 
 </html>

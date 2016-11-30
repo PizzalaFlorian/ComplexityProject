@@ -4,8 +4,8 @@ class City{
 	private $name;
 	private $pheromone;
 	private $tauxEvaporation;
-	private $x;
-	private $y;
+	public $x;
+	public $y;
 	public $antList;//liste des fourmis éligible au départ
 	public $stockage;//liste de stockage
 
@@ -13,8 +13,8 @@ class City{
 		$this->name = $name;
 		$this->pheromone = 0;
 		$this->tauxEvaporation = $tauxEvaporation;
-		$this->x = rand(1,$maxDim-1);
-		$this->y = rand(1,$maxDim-1);
+		$this->x = rand(10,$maxDim-10);
+		$this->y = rand(10,$maxDim-10);
 		$this->antList = array();
 		$this->stockage = array();
 	}
