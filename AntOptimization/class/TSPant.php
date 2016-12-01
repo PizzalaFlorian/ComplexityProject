@@ -22,15 +22,19 @@ class TSPant{
 	}
 
 	public function visite($nomVille,$cout){
+		//var_dump('je me déplace à '.$nomVille);
 		$this->score += $cout;
 		$this->trajet[] = $nomVille;
 		$this->nombreVilleVisite++;
 	}
 
 	//retourne l'index de la ville de destination en fonction du tableau de toutes les villes
-	public function chooseDest($listVille){
+	public function chooseDest($listVille,$trip){
+		//var_dump('choose dest');
 		$possibilite = $this->filterVille($listVille);
-		$resIndex = $this->choose($possibilite);
+		//var_dump($possibilite);
+		$resIndex = $this->choose($possibilite,$trip);
+		//var_dump($resIndex);
 		return $resIndex;
 	}
 
@@ -54,7 +58,7 @@ class TSPant{
 	}
 
 	//Choix probabiliste pondéré entre les villes
-	public function choose($listVille){
+	public function choose($listVille,$trip){
 		$max = 0;
 		$tableRand = array();
 		//var_dump($listVille);
@@ -65,19 +69,31 @@ class TSPant{
 			$tableRand[] = $max;
 		}
 		//tirage entre 1 et SumMax et comparaison sur les sommes.
-		$r = rand(1,$max);
-		foreach ($tableRand as $key => $value) {
-			if($r < $value){
-				return $listVille[$key]->number;
+		if($max > 0 && $trip > 0){
+			//var_dump('choix pondéré');
+			$r = rand(1,$max);
+			foreach ($tableRand as $key => $value) {
+				if($r < $value){
+					return $listVille[$key]->number;
+				}
 			}
+			return $listVille[count($listVille)-1]->number;
 		}
-		return $listVille[count($listVille)-1]->number;
+		if($trip == 0 || $max == 0){
+			//var_dump('choix random');
+			$r = rand(0,count($listVille)-1);
+			//var_dump($listVille[$r]);
+			return $listVille[$r]->number;
+		}
+		
 	}
 
-	public function nameCurrentCity($lv){
+	public function nameCurrentCity(){
 		//var_dump($this->trajet);
 		//var_dump($this->nombreVilleVisite);
-		return $this->trajet[$this->nombreVilleVisite - 1];
+		$res = $this->trajet[$this->nombreVilleVisite - 1];
+		//var_dump($res);
+		return $res;
 	}
 
 	public function addCout($val){

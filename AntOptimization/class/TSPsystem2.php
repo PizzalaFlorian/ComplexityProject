@@ -14,6 +14,7 @@
 		private $maxDim;
 
 		private $tour;
+		private $tripNumber;
 		private $listFourmis;
 
 		private $bestTrajet;//liste des ville du meilleur trajet
@@ -29,6 +30,7 @@
 
 			$this->NbVille = 0;
 			$this->tour = 0;
+			$this->tripNumber = 0;
 			$this->bestScore = 0;
 			$this->bestTrajet = 0;
 
@@ -61,6 +63,7 @@
 		}
 
 		public function constuctMatrix(){
+			$maxDist = 0;
 			for($i=0; $i < $this->NbVille; $i++){
 				$this->matrixAdj[$i][$i] = 0;
 			}
@@ -69,13 +72,15 @@
 					$r = intval(sqrt(pow($this->listVille[$i]->x - $this->listVille[$j]->x,2) + pow($this->listVille[$i]->y - $this->listVille[$j]->y,2)));
 					$this->matrixAdj[$i][$j] = $r;
 					$this->matrixAdj[$j][$i] = $r;
+					$maxDist += $r;
 				}
 			}
+			$this->bestScore = $maxDist*2;
 		}
 
 		//chech la liste de stockage de la source pour voir les résultats.
 		public function recupResultats($ant){
-			if($ant->getScore() < $this->bestScore){
+			if($ant->getScore() < $this->bestScore && $ant->getScore() > 0){
 				$this->bestTrajet = $ant->getTrajet();
 				$this->bestScore = $ant->getScore();
 			}
@@ -96,6 +101,9 @@
 		}
 
 		public function getIndexByName($name){
+			if(!is_string($name)){
+				$name = $name->getName();
+			}
 			foreach ($this->listVille as $v) {
 				if($v->getName() == $name){
 					return $v->number;
@@ -107,21 +115,26 @@
 
 		//effectue la phase de mouvement
 		public function move(){
+			//var_dump('moove');
 			$removeList = array();
 			for ($i=0; $i < count($this->listFourmis); $i++) { 
 				//var_dump($this->listFourmis);
 				if($this->listFourmis[$i]->isFinVoyage($this->NbVille)){
+					//var_dump('c est la fin pour moi');
 					//effectue le retour à la ville de départ
-					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity($this->listVille))]  );
+					//var_dump('one last ride');
+					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity())]  );
 					//Notifie qu'il faudra supprimer cette fourmis.
+					$this->listVille[ 0 ]->incrPheromone(1);
 					$removeList[] = $i;
 				}
 				else{
+					//var_dump('je suis en route');
 					//choisi la ville
-					$destIndex = $this->listFourmis[$i]->chooseDest($this->listVille);
-					$destName = $this->listVille[ $destIndex ];
+					$destIndex = $this->listFourmis[$i]->chooseDest($this->listVille,$this->tripNumber);
+					$destName = $this->listVille[ $destIndex ]->getName();
 					//ajoute le trajet du coté de la fourmis
-					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity($this->listVille))]  );
+					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[$destIndex][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity())]  );
 					//incrémente le phéromone pour notifié le passage dans la ville
 					$this->listVille[ $destIndex ]->incrPheromone(1);
 				}
@@ -131,6 +144,7 @@
 			foreach ($removeList as $key => $value) {
 				$this->recupResultats($this->listFourmis[$value]);
 				array_splice($this->listFourmis, $value, 1);
+				$this->tripNumber ++;
 			}
 		}
 
@@ -138,11 +152,9 @@
 			if($this->tour==0){
 				$this->reinject();
 			}
-			else{
-				$this->move();
-				$this->reinject();
-				$this->evaporate();
-			}
+			$this->move();
+			$this->reinject();
+			$this->evaporate();
 			$this->tour++;
 		}
 
@@ -153,7 +165,7 @@
 		}
 
 		public function doOneTrip(){
-			$this->multipleRun($this->NbVille);
+			$this->multipleRun($this->NbVille+1);
 		}
 
 		public function doNTrip($N){
@@ -166,7 +178,7 @@
 			foreach ($this->listVille as $ville) {
 				$ville->resetSimu();
 			}
-			$this->bestScore = 0;
+			$this->bestScore = 10000000000000000000000000000000000000;
 			$this->bestTrajet = array();
 			$this->listFourmis = array();
 		}
@@ -263,9 +275,15 @@
 			echo '<div>';
 			echo 'Cout du meilleur trajet : '.$this->bestScore.'<br/>';
 			if(!empty($this->bestTrajet)){
-				echo 'Trajet : '.$this->bestTrajet;
+				echo 'Trajet : ';
+				var_dump($this->bestTrajet);
+				foreach ($this->bestTrajet as $key) {
+					echo '['.$key.']';
+				}
+				
 			}
 			echo '</div>';
+			var_dump($this->listFourmis);
 		}
 
 
