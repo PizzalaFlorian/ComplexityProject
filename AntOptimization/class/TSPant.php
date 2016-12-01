@@ -16,6 +16,8 @@ class TSPant{
 
 	public function isFinVoyage($maxVille){
 		if(($this->nombreVilleVisite + 1) >= $maxVille){
+			var_dump('maxVille');
+			var_dump($maxVille);
 			return true;
 		}
 		return false;
