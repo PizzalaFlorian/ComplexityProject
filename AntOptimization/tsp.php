@@ -25,7 +25,7 @@
       if($param == "voyage"){
         $_SESSION["tsp"]->doOneTrip();
       }
-      if($param == "10voyage"){
+      if($param == "10voyages"){
         $_SESSION["tsp"]->doNTrip(10);
       }
    }

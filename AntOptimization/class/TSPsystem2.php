@@ -81,6 +81,7 @@
 		//chech la liste de stockage de la source pour voir les résultats.
 		public function recupResultats($ant){
 			if($ant->getScore() < $this->bestScore && $ant->getScore() > 0){
+				var_dump($ant->getTrajet());
 				$this->bestTrajet = $ant->getTrajet();
 				$this->bestScore = $ant->getScore();
 			}
@@ -124,6 +125,9 @@
 					//effectue le retour à la ville de départ
 					//var_dump('one last ride');
 					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity())]  );
+					
+					//var_dump($this->listFourmis[$i]->getTrajet());
+					//var_dump($this->listFourmis[$i]);
 					//Notifie qu'il faudra supprimer cette fourmis.
 					$this->listVille[ 0 ]->incrPheromone(1);
 					$removeList[] = $i;
