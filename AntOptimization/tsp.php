@@ -1,6 +1,6 @@
 <?php
 
-    include("./class/TSPsystem.php");
+    include("./class/TSPsystem2.php");
     session_start();
     //var_dump($_POST);
     $param = $_SERVER['QUERY_STRING'];
@@ -117,11 +117,12 @@
                 <?php
                     if(!empty($_SESSION["tsp"])){
                         $_SESSION["tsp"]->draw();
+                        var_dump($_SESSION["tsp"]->listVille);
                     }
                     else{
                         echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";
                     }
-                    var_dump($_SESSION["tsp"]->listVille)
+                    
                 ?>
             </div>
             <br>
