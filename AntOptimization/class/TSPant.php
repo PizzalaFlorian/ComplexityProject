@@ -8,14 +8,14 @@ class TSPant{
 
 	public function __construct($source){
 		$this->trajet = array();
-		$this->trajet[$source] = true;
+		$this->trajet[] = $source;
 		$this->source = $source;
 		$this->score = 0;
 		$this->nombreVilleVisite = 1;//On as visité la source
 	}
 
 	public function isFinVoyage($maxVille){
-		if($maxVille >= $nombreVilleVisite){
+		if($maxVille <= $this->nombreVilleVisite){
 			return true;
 		}
 		return false;
@@ -23,24 +23,14 @@ class TSPant{
 
 	public function visite($nomVille,$cout){
 		$this->score += $cout;
-		$this->trajet[$nomVille] = true;
+		$this->trajet[] = $nomVille;
 		$this->nombreVilleVisite++;
-	}
-
-	public function villeEligible($listVille){
-		$listEligible = array();
-		foreach ($listVille as $ville) {
-			if(!isset($this->trajet[$ville])){
-				$listEligible[] = $ville;
-			}
-		}
-		return $listEligible;
 	}
 
 	//retourne l'index de la ville de destination en fonction du tableau de toutes les villes
 	public function chooseDest($listVille){
 		$possibilite = $this->filterVille($listVille);
-		$resIndex = $this>choose($possibilite)
+		$resIndex = $this->choose($possibilite);
 		return $resIndex;
 	}
 
@@ -51,7 +41,7 @@ class TSPant{
 				$res[] = $v;
 			}
 		}
-		return $v;
+		return $res;
 	}
 
 	public function aVisitee($ville){
@@ -67,8 +57,10 @@ class TSPant{
 	public function choose($listVille){
 		$max = 0;
 		$tableRand = array();
+		//var_dump($listVille);
 		//préparation max et table des sommes.
 		foreach ($listVille as $ville) {
+			//var_dump($ville);
 			$max += $ville->getPheromone();
 			$tableRand[] = $max;
 		}
@@ -83,7 +75,9 @@ class TSPant{
 	}
 
 	public function nameCurrentCity($lv){
-		return $this->trajet[$this->nombreVilleVisite - 1]);
+		//var_dump($this->trajet);
+		//var_dump($this->nombreVilleVisite);
+		return $this->trajet[$this->nombreVilleVisite - 1];
 	}
 
 	public function addCout($val){

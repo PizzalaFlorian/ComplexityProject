@@ -57,7 +57,7 @@
 					$count++;
 				}
 			}
-			$this->source = $listVille[0]->getName();
+			$this->source = $this->listVille[0]->getName();
 		}
 
 		public function constuctMatrix(){
@@ -74,14 +74,11 @@
 		}
 
 		//chech la liste de stockage de la source pour voir les résultats.
-		public function recupResultats(){
-			foreach ($this->listVille[0]->stockage as $ant) {
-				if($ant->getScore() < $this->bestScore){
-					$this->bestTrajet = $ant->getTrajet();
-					$this->bestScore = $ant->getScore();
-				}
+		public function recupResultats($ant){
+			if($ant->getScore() < $this->bestScore){
+				$this->bestTrajet = $ant->getTrajet();
+				$this->bestScore = $ant->getScore();
 			}
-			$this->listVille[0]->stockage = array();
 		}
 
 		//ajoute des nouvelles fourmis au système
@@ -112,9 +109,10 @@
 		public function move(){
 			$removeList = array();
 			for ($i=0; $i < count($this->listFourmis); $i++) { 
+				//var_dump($this->listFourmis);
 				if($this->listFourmis[$i]->isFinVoyage($this->NbVille)){
 					//effectue le retour à la ville de départ
-					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity($this->listVille)] ) );
+					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity($this->listVille))]  );
 					//Notifie qu'il faudra supprimer cette fourmis.
 					$removeList[] = $i;
 				}
@@ -123,15 +121,16 @@
 					$destIndex = $this->listFourmis[$i]->chooseDest($this->listVille);
 					$destName = $this->listVille[ $destIndex ];
 					//ajoute le trajet du coté de la fourmis
-					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[ $destIndex ][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity($this->listVille)] ) ] );
+					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity($this->listVille))]  );
 					//incrémente le phéromone pour notifié le passage dans la ville
-					$listVille[ $destIndex ]->incrPheromone(1);
+					$this->listVille[ $destIndex ]->incrPheromone(1);
 				}
 			}
 
 			//Nettoye les fourmis qui ont finis leurs trajets
 			foreach ($removeList as $key => $value) {
-				unset($this->listFourmis[$value]);
+				$this->recupResultats($this->listFourmis[$value]);
+				array_splice($this->listFourmis, $value, 1);
 			}
 		}
 
@@ -155,7 +154,6 @@
 
 		public function doOneTrip(){
 			$this->multipleRun($this->NbVille);
-			$this->recupResultats();
 		}
 
 		public function doNTrip($N){
@@ -214,10 +212,6 @@
 
 		}
 
-		public function drawResultat(){
-
-		}
-
 		public function draw()
 		{
 			echo '<div class="fb">';
@@ -263,6 +257,15 @@
 			}
 			
 			echo '</script>';
+		}
+
+		public function drawResultat(){
+			echo '<div>';
+			echo 'Cout du meilleur trajet : '.$this->bestScore.'<br/>';
+			if(!empty($this->bestTrajet)){
+				echo 'Trajet : '.$this->bestTrajet;
+			}
+			echo '</div>';
 		}
 
 
