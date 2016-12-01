@@ -117,7 +117,7 @@
 		//effectue la phase de mouvement
 		public function move(){
 			//var_dump('moove');
-			$removeList = array();
+			$remove = false;
 			for ($i=0; $i < count($this->listFourmis); $i++) { 
 				//var_dump($this->listFourmis);
 				if($this->listFourmis[$i]->isFinVoyage($this->NbVille)){
@@ -130,7 +130,7 @@
 					//var_dump($this->listFourmis[$i]);
 					//Notifie qu'il faudra supprimer cette fourmis.
 					$this->listVille[ 0 ]->incrPheromone(1);
-					$removeList[] = $i;
+					$remove = true;
 				}
 				else{
 					//var_dump('je suis en route');
@@ -143,11 +143,22 @@
 					$this->listVille[ $destIndex ]->incrPheromone(1);
 				}
 			}
-
 			//Nettoye les fourmis qui ont finis leurs trajets
-			foreach ($removeList as $key => $value) {
-				$this->recupResultats($this->listFourmis[$value]);
-				array_splice($this->listFourmis, $value, 1);
+			if($remove){
+				$j = 0;
+				while($this->listFourmis[$j]->getNombreVilleVisite() >= $this->NbVille + 1 && $j < count($this->listFourmis) - 1){ 
+					$this->recupResultats($this->listFourmis[$j]);
+					$j++;
+				}
+				$j = 0;
+				
+				while($this->listFourmis[$j]->getNombreVilleVisite() >= $this->NbVille + 1){
+					array_splice($this->listFourmis, $j, 1);
+					$j++;
+					if($j > count($this->listFourmis) - 1){
+						$j=0;
+					}
+				}
 				$this->tripNumber ++;
 			}
 		}
@@ -155,11 +166,16 @@
 		public function run(){
 			if($this->tour==0){
 				$this->reinject();
+				$this->move();
+				$this->evaporate();
+				$this->tour++;
 			}
-			$this->move();
-			$this->reinject();
-			$this->evaporate();
-			$this->tour++;
+			else{
+				$this->move();
+				$this->reinject();
+				$this->evaporate();
+				$this->tour++;
+			}
 		}
 
 		public function multipleRun($val){

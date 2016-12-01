@@ -15,9 +15,9 @@ class TSPant{
 	}
 
 	public function isFinVoyage($maxVille){
-		if(($this->nombreVilleVisite + 1) >= $maxVille){
-			var_dump('maxVille');
-			var_dump($maxVille);
+		if(($this->nombreVilleVisite ) == $maxVille){
+			//var_dump('maxVille');
+			//var_dump($maxVille);
 			return true;
 		}
 		return false;
@@ -84,7 +84,9 @@ class TSPant{
 		if($trip == 0 || $max == 0){
 			//var_dump('choix random');
 			$r = rand(0,count($listVille)-1);
-			//var_dump($listVille[$r]);
+			var_dump($r);
+			var_dump($listVille[$r]);
+			var_dump($listVille[$r]);
 			return $listVille[$r]->number;
 		}
 		
