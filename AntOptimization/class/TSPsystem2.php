@@ -7,6 +7,7 @@
 		private $matrixAdj;
 		public $listVille;//source est la première ville
 		private $NbVille;
+		private $source;
 
 		private $tauxEvaporation;
 		private $tauxFourmirs;
@@ -56,6 +57,7 @@
 					$count++;
 				}
 			}
+			$this->source = $listVille[0]->getName();
 		}
 
 		public function constuctMatrix(){
@@ -71,33 +73,6 @@
 			}
 		}
 
-		//déplace les fourmis dans la liste de stockage du nouveau noeud
-		public function deplacerLesFourmis(){
-			// for($i=1; $i < count($this->listVille) ; $i++) {//utilise les indices pour acces rapide au tableau
-			// 	$listVoisins = $this->listVille;
-			// 	foreach ($this->listVille[$i]->antList as $ant) {
-			// 		$listDest = $ant->villeEligible($listVoisins);//traiter les cas liste vide
-			// 		if(!isset($listDest) || empty($listDest)){
-			// 			if($ant->getNombreVilleVisite() == $NbVille){//cas elle as tout visité
-			// 				//retour à la case départ
-			// 				$ant->addCout($this->matrixAdj[$i][0]);
-			// 				$this->listVille[0]->stockage = $ant;
-			// 			}
-			// 			else{//cas elle est bloqué
-			// 				var_dump($ant);
-			// 				var_dump("error");
-			// 			}
-			// 		}
-			// 		else{//il y as des villes à visité
-			// 			$villeDest = $ant->chooseDest($i,$listDest);
-			// 			$ant->visite($villeDest,$this->matrixAdj[$i][$villeDest]);
-			// 			$villeDest->stockage[] = $ant;
-			// 			$villeDest->incrPheromone(1);
-			// 		}
-			// 	}
-			// }
-		}
-
 		//chech la liste de stockage de la source pour voir les résultats.
 		public function recupResultats(){
 			foreach ($this->listVille[0]->stockage as $ant) {
@@ -109,29 +84,11 @@
 			$this->listVille[0]->stockage = array();
 		}
 
-		//vide la liste active swap la liste de stokage dans la liste active
-		public function transmuterLesListes(){
-			// foreach ($this->listVille as $ville) {
-			// 	if(!empty($ville->antList)){
-			// 		$ville->antList = array();
-			// 	}
-			// 	if( !empty($ville->stockage)){
-			// 		$ville->antList = array_merge($ville->antList,$ville->stockage);
-			// 		$ville->stockage = array();
-			// 	}
-			// }
-		}
-
 		//ajoute des nouvelles fourmis au système
 		public function reinject(){
-			// $listVoisins = $this->listVille;
-			// for($i=0;$i<$this->tauxFourmirs;$i++){
-			// 	$ant = new TSPant(0);
-			// 	$villeDest = $ant->chooseDest(0,$listVoisins);
-			// 	$ant->visite($villeDest,$this->matrixAdj[0][$villeDest]);
-			// 	$this->listVille[$villeDest]->stockage[] = $ant;
-			// 	$this->listVille[$villeDest]->incrPheromone(1);
-			// }
+			for ($i=0; $i < $this->tauxFourmirs; $i++) { 
+				$this->listFourmis[] = new TSPant($this->source);
+			}
 		}
 
 		//fonction d'évaporation
@@ -141,11 +98,41 @@
 			}
 		}
 
+		public function getIndexByName($name){
+			foreach ($this->listVille as $v) {
+				if($v->getName() == $name){
+					return $v->number;
+				}
+			}
+			var_dump("pas trouver nom :");
+			var_dump($name);
+		}
+
 		//effectue la phase de mouvement
 		public function move(){
-			$this->deplacerLesFourmis();
-			$this->recupResultats();
-			$this->transmuterLesListes();
+			$removeList = array();
+			for ($i=0; $i < count($this->listFourmis); $i++) { 
+				if($this->listFourmis[$i]->isFinVoyage($this->NbVille)){
+					//effectue le retour à la ville de départ
+					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity($this->listVille)] ) );
+					//Notifie qu'il faudra supprimer cette fourmis.
+					$removeList[] = $i;
+				}
+				else{
+					//choisi la ville
+					$destIndex = $this->listFourmis[$i]->chooseDest($this->listVille);
+					$destName = $this->listVille[ $destIndex ];
+					//ajoute le trajet du coté de la fourmis
+					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[ $destIndex ][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity($this->listVille)] ) ] );
+					//incrémente le phéromone pour notifié le passage dans la ville
+					$listVille[ $destIndex ]->incrPheromone(1);
+				}
+			}
+
+			//Nettoye les fourmis qui ont finis leurs trajets
+			foreach ($removeList as $key => $value) {
+				unset($this->listFourmis[$value]);
+			}
 		}
 
 		public function run(){
@@ -168,6 +155,7 @@
 
 		public function doOneTrip(){
 			$this->multipleRun($this->NbVille);
+			$this->recupResultats();
 		}
 
 		public function doNTrip($N){
