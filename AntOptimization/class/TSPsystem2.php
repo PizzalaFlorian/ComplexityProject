@@ -81,7 +81,7 @@
 		//chech la liste de stockage de la source pour voir les résultats.
 		public function recupResultats($ant){
 			if($ant->getScore() < $this->bestScore && $ant->getScore() > 0){
-				var_dump($ant->getTrajet());
+				//var_dump($ant->getTrajet());
 				$this->bestTrajet = $ant->getTrajet();
 				$this->bestScore = $ant->getScore();
 			}
@@ -161,7 +161,6 @@
 				}
 				$newArray = array();
 				$this->listFourmis = array_merge($newArray, $this->listFourmis);
-				$this->tripNumber ++;
 			}
 		}
 
@@ -188,6 +187,7 @@
 
 		public function doOneTrip(){
 			$this->multipleRun($this->NbVille+1);
+			$this->tripNumber ++;
 		}
 
 		public function doNTrip($N){
@@ -203,6 +203,8 @@
 			$this->bestScore = 10000000000000000000000000000000000000;
 			$this->bestTrajet = array();
 			$this->listFourmis = array();
+			$this->tour=0;
+			$this->tripNumber=0;
 		}
 
 		public function drawTableVille(){
@@ -249,12 +251,53 @@
 		public function draw()
 		{
 			echo '<div class="fb">';
+				echo '<div class="superTable"><h4> Voyage n° :'.$this->tripNumber.'</h4></div>';
 				$this->drawTableVille();
 				echo '<canvas id="myCanvas" width='.$this->maxDim.' height='.$this->maxDim.' style="width:'.$this->maxDim.'px;height:'.$this->maxDim.'px"></canvas>';
 				$this->drawGraph();
 			echo '</div>';
 			$this->drawResultat();
 		}
+
+		public function drawSolution(){
+			if(!empty($this->bestTrajet)){
+				// for ($i=0; $i < count($this->bestTrajet) -2 ; $i++) { 
+				// 	for ($j=$i+1; $j <count($this->bestTrajet) -1 ; $j++) { 
+				// 		$source = $this->listVille[$this->getIndexByName($this->bestTrajet[$i])];
+				// 		$dest = $this->listVille[$this->getIndexByName($this->bestTrajet[$j])];
+				// 		echo '	ctx.beginPath();
+				// 			ctx.fillStyle="#FF0000";
+				// 			ctx.moveTo('.$source->x.','.$source->y.');
+				// 			ctx.lineTo('.$dest->x.','.$dest->y.');
+				// 			ctx.fillStyle="#FF0000";
+				// 			ctx.lineWidth = 2;
+				// 			ctx.stroke();
+				// 			console.log("toto");';
+				// 	}
+				// }
+				
+				$prec = false;
+				foreach ($this->bestTrajet as $Name) {
+				 	if($prec == false){
+				 		$prec = $this->listVille[$this->getIndexByName($Name)];
+				 	}
+				 	else{
+				 		$current = $this->listVille[$this->getIndexByName($Name)];
+
+				 		echo '	ctx.beginPath();
+							ctx.moveTo('.$prec->x.','.$prec->y.');
+							ctx.lineTo('.$current->x.','.$current->y.');
+							ctx.fillStyle="#FF0000";
+							ctx.lineWidth = 3;
+							ctx.stroke();
+							console.log("toto");';
+						$prec = $current;
+				 	}
+				 } 
+				
+			}
+		}
+
 
 		public function drawGraph(){
 			echo '<script>
@@ -283,9 +326,11 @@
 					echo '	ctx.beginPath();
 							ctx.moveTo('.$this->listVille[$i]->x.','.$this->listVille[$i]->y.');
 							ctx.lineTo('.$this->listVille[$j]->x.','.$this->listVille[$j]->y.');
+							ctx.lineWidth = 1;
 							ctx.stroke();';
+					}
 				}
-			}
+			$this->drawSolution();
 			foreach ($this->listVille as $ville) {
 				echo 'city('.$ville->x.','.$ville->y.',ctx,"'.$ville->getName().'");';
 			}
@@ -298,14 +343,14 @@
 			echo 'Cout du meilleur trajet : '.$this->bestScore.'<br/>';
 			if(!empty($this->bestTrajet)){
 				echo 'Trajet : ';
-				var_dump($this->bestTrajet);
+				//var_dump($this->bestTrajet);
 				foreach ($this->bestTrajet as $key) {
 					echo '['.$key.']';
 				}
 				
 			}
 			echo '</div>';
-			var_dump($this->listFourmis);
+			//var_dump($this->listFourmis);
 		}
 
 

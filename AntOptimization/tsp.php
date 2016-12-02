@@ -99,7 +99,7 @@
             <div class="w3-container w3-card-4">
               <br/>
               <div class="w3-center">
-                  <a href="tsp.php?tour" class="w3-btn w3-theme w3-center">Faire un tour</a>
+                  <!-- <a href="tsp.php?tour" class="w3-btn w3-theme w3-center">Faire un tour</a> -->
                   <a href="tsp.php?voyage" class="w3-btn w3-theme w3-center">Faire un voyage</a>
                   <a href="tsp.php?10voyages" class="w3-btn w3-theme w3-center">Faire 10 voyages</a>
                   <hr>
