@@ -3,16 +3,16 @@
 class City{
 	private $name;
 	public $number;
-	private $pheromone;
-	private $tauxEvaporation;
+	//private $pheromone;
+	//private $tauxEvaporation;
 	public $x;
 	public $y;
 	
-	public function __construct($name,$number,$tauxEvaporation,$maxDim){
+	public function __construct($name,$number,$maxDim){
 		$this->name = $name;
-		$this->pheromone = 0;
+		//$this->pheromone = 0;
 		$this->number = $number;
-		$this->tauxEvaporation = $tauxEvaporation;
+		//$this->tauxEvaporation = $tauxEvaporation;
 		$this->x = rand(10,$maxDim-10);
 		$this->y = rand(10,$maxDim-10);
 	}
@@ -21,13 +21,13 @@ class City{
 		return $this->name;
 	}
 
-	public function incrPheromone($val){
-		$this->pheromone += $val;
-	}
+	// public function incrPheromone($val){
+	// 	$this->pheromone += $val;
+	// }
 
-	public function getPheromone(){
-		return $this->pheromone;
-	}
+	// public function getPheromone(){
+	// 	return $this->pheromone;
+	// }
 
 	public function setEvap($val){
 		$this->tauxEvaporation = $val;
@@ -37,14 +37,14 @@ class City{
 		$this->pheromone = 0;
 	}
 
-	public function evaporate(){
-		if($this->pheromone - $this->tauxEvaporation > 0){
-			$this->pheromone -= $this->tauxEvaporation; 
-		}
-		else{
-			$this->pheromone = 0;
-		}
-	}
+	// public function evaporate(){
+	// 	if($this->pheromone - $this->tauxEvaporation > 0){
+	// 		$this->pheromone -= $this->tauxEvaporation; 
+	// 	}
+	// 	else{
+	// 		$this->pheromone = 0;
+	// 	}
+	// }
 }
 
 ?>

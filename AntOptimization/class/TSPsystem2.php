@@ -22,6 +22,8 @@
 
 		public function __construct($stringVilles,$maxDim){
 			$this->matrixAdj = array();
+			$this->matrixPh = array();
+
 			$this->listVille = array();
 			$this->listFourmis = array();
 
@@ -66,12 +68,15 @@
 			$maxDist = 0;
 			for($i=0; $i < $this->NbVille; $i++){
 				$this->matrixAdj[$i][$i] = 0;
+				$this->matrixPh[$i][$i] = 0;
 			}
 			for($i=0; $i < $this->NbVille; $i++){
 				for ($j=($i+1); $j < $this->NbVille ; $j++) {
 					$r = intval(sqrt(pow($this->listVille[$i]->x - $this->listVille[$j]->x,2) + pow($this->listVille[$i]->y - $this->listVille[$j]->y,2)));
 					$this->matrixAdj[$i][$j] = $r;
 					$this->matrixAdj[$j][$i] = $r;
+					$this->matrixPh[$i][$j] = 0;
+					$this->matrixPh[$j][$i] = 0;
 					$maxDist += $r;
 				}
 			}
@@ -96,9 +101,9 @@
 
 		//fonction d'évaporation
 		public function evaporate(){
-			foreach ($this->listVille as $ville) {
-				$ville->evaporate();
-			}
+			// foreach ($this->listVille as $ville) {
+			// 	$ville->evaporate();
+			// }
 		}
 
 		public function getIndexByName($name){
@@ -121,15 +126,12 @@
 			for ($i=0; $i < count($this->listFourmis); $i++) { 
 				//var_dump($this->listFourmis);
 				if($this->listFourmis[$i]->isFinVoyage($this->NbVille)){
-					//var_dump('c est la fin pour moi');
-					//effectue le retour à la ville de départ
-					//var_dump('one last ride');
-					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity())]  );
+				
+					$curr = $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity());
+					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $curr ]  );
 					
-					//var_dump($this->listFourmis[$i]->getTrajet());
-					//var_dump($this->listFourmis[$i]);
 					//Notifie qu'il faudra supprimer cette fourmis.
-					$this->listVille[ 0 ]->incrPheromone(1);
+					$this->matrixPh[0][ $curr ] += 1;
 					$remove = true;
 				}
 				else{
@@ -139,9 +141,10 @@
 					//var_dump($destIndex);
 					$destName = $this->listVille[ $destIndex ]->getName();
 					//ajoute le trajet du coté de la fourmis
-					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[$destIndex][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity())]  );
+					$curr = $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity());
+					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[$destIndex][ $curr]  );
 					//incrémente le phéromone pour notifié le passage dans la ville
-					$this->listVille[ $destIndex ]->incrPheromone(1);
+					$this->matrixPh[0][ $curr ] += 1;
 				}
 			}
 			//Nettoye les fourmis qui ont finis leurs trajets
