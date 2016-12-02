@@ -38,7 +38,7 @@ class City{
 	}
 
 	public function evaporate(){
-
+		$this->pheromone -= $this->tauxEvaporation; 
 	}
 }
 
