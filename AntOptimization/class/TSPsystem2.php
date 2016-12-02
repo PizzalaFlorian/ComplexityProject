@@ -136,6 +136,7 @@
 					//var_dump('je suis en route');
 					//choisi la ville
 					$destIndex = $this->listFourmis[$i]->chooseDest($this->listVille,$this->tripNumber);
+					//var_dump($destIndex);
 					$destName = $this->listVille[ $destIndex ]->getName();
 					//ajoute le trajet du coté de la fourmis
 					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[$destIndex][ $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity())]  );
@@ -151,14 +152,6 @@
 					$j++;
 				}
 				$j = 0;
-				
-				// while($this->listFourmis[$j]->getNombreVilleVisite() >= $this->NbVille + 1){
-				// 	array_splice($this->listFourmis, $j, 1);
-				// 	$j++;
-				// 	if($j > count($this->listFourmis) - 1){
-				// 		$j=0;
-				// 	}
-				// }
 				while($this->listFourmis[$j]->getNombreVilleVisite() >= $this->NbVille + 1){
 					unset($this->listFourmis[$j]);
 					$j++;

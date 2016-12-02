@@ -38,7 +38,12 @@ class City{
 	}
 
 	public function evaporate(){
-		$this->pheromone -= $this->tauxEvaporation; 
+		if($this->pheromone - $this->tauxEvaporation > 0){
+			$this->pheromone -= $this->tauxEvaporation; 
+		}
+		else{
+			$this->pheromone = 0;
+		}
 	}
 }
 
