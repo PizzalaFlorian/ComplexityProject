@@ -152,13 +152,22 @@
 				}
 				$j = 0;
 				
+				// while($this->listFourmis[$j]->getNombreVilleVisite() >= $this->NbVille + 1){
+				// 	array_splice($this->listFourmis, $j, 1);
+				// 	$j++;
+				// 	if($j > count($this->listFourmis) - 1){
+				// 		$j=0;
+				// 	}
+				// }
 				while($this->listFourmis[$j]->getNombreVilleVisite() >= $this->NbVille + 1){
-					array_splice($this->listFourmis, $j, 1);
+					unset($this->listFourmis[$j]);
 					$j++;
 					if($j > count($this->listFourmis) - 1){
 						$j=0;
 					}
 				}
+				$newArray = array();
+				$this->listFourmis = array_merge($newArray, $this->listFourmis);
 				$this->tripNumber ++;
 			}
 		}
