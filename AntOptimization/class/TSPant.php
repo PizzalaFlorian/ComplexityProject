@@ -31,11 +31,12 @@ class TSPant{
 	}
 
 	//retourne l'index de la ville de destination en fonction du tableau de toutes les villes
-	public function chooseDest($listVille,$trip){
+	public function chooseDest($listVille,$matrix,$trip){
 		//var_dump('choose dest');
 		$possibilite = $this->filterVille($listVille);
 		//var_dump($possibilite);
-		$resIndex = $this->choose($possibilite,$trip);
+		$current = $this->getIndexCurrentCity($listVille);
+		$resIndex = $this->choose($current,$possibilite,$matrix,$trip);
 		//var_dump($resIndex);
 		return $resIndex;
 	}
@@ -59,15 +60,27 @@ class TSPant{
 		return false;
 	}
 
+	public function getIndexCurrentCity($listVille){
+		$name = $this->nameCurrentCity();
+		if(!is_string($name)){
+				return $name->number;
+			}
+			foreach ($listVille as $v) {
+				if($v->getName() == $name){
+					return $v->number;
+				}
+			}
+	}
+
 	//Choix probabiliste pondéré entre les villes
-	public function choose($listVille,$trip){
+	public function choose($current,$listVille,$matrix,$trip){
 		$max = 0;
 		$tableRand = array();
-		//var_dump($listVille);
+
 		//préparation max et table des sommes.
 		foreach ($listVille as $ville) {
 			//var_dump($ville);
-			$max += $ville->getPheromone();
+			$max += $matrix[$current][$ville->number];
 			$tableRand[] = $max;
 		}
 		//tirage entre 1 et SumMax et comparaison sur les sommes.

@@ -75,12 +75,26 @@
 					$r = intval(sqrt(pow($this->listVille[$i]->x - $this->listVille[$j]->x,2) + pow($this->listVille[$i]->y - $this->listVille[$j]->y,2)));
 					$this->matrixAdj[$i][$j] = $r;
 					$this->matrixAdj[$j][$i] = $r;
+
 					$this->matrixPh[$i][$j] = 0;
 					$this->matrixPh[$j][$i] = 0;
+					
 					$maxDist += $r;
 				}
 			}
 			$this->bestScore = $maxDist*2;
+		}
+
+		public function resetMatrixPh(){
+			for($i=0; $i < $this->NbVille; $i++){
+				$this->matrixPh[$i][$i] = 0;
+			}
+			for($i=0; $i < $this->NbVille; $i++){
+				for ($j=($i+1); $j < $this->NbVille ; $j++) {	
+					$this->matrixPh[$i][$j] = 0;
+					$this->matrixPh[$j][$i] = 0;
+				}
+			}
 		}
 
 		//chech la liste de stockage de la source pour voir les résultats.
@@ -131,20 +145,20 @@
 					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $curr ]  );
 					
 					//Notifie qu'il faudra supprimer cette fourmis.
-					$this->matrixPh[0][ $curr ] += 1;
+					$this->matrixPh[$curr][ 0 ] += 1;
 					$remove = true;
 				}
 				else{
 					//var_dump('je suis en route');
 					//choisi la ville
-					$destIndex = $this->listFourmis[$i]->chooseDest($this->listVille,$this->tripNumber);
+					$destIndex = $this->listFourmis[$i]->chooseDest($this->listVille,$this->matrixPh,$this->tripNumber);
 					//var_dump($destIndex);
 					$destName = $this->listVille[ $destIndex ]->getName();
 					//ajoute le trajet du coté de la fourmis
 					$curr = $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity());
 					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[$destIndex][ $curr]  );
 					//incrémente le phéromone pour notifié le passage dans la ville
-					$this->matrixPh[0][ $curr ] += 1;
+					$this->matrixPh[$curr][ $destIndex ] += 1;
 				}
 			}
 			//Nettoye les fourmis qui ont finis leurs trajets
@@ -203,6 +217,7 @@
 			foreach ($this->listVille as $ville) {
 				$ville->resetSimu();
 			}
+			$this->resetMatrixPh();
 			$this->bestScore = 10000000000000000000000000000000000000;
 			$this->bestTrajet = array();
 			$this->listFourmis = array();
@@ -212,21 +227,29 @@
 
 		public function drawTableVille(){
 			echo '<div>';
-			echo '<table class="superTable">
-					<tr>
-						<td> Ville </td>
-						<td> Pheromone </td>
-					</tr>
-			';
-			foreach ($this->listVille as $ville) {
-				echo '
-					<tr>
-						<td>'.$ville->getName().'</td>
-						<td>'.$ville->getPheromone().'</td>
-					</tr>';
+			echo '<h4>Pheromones</h4>';
+			echo '<table class="superTable">';
+			echo '<tr>';
+			echo '<td> </td>';
+			for ($i=0; $i < $this->NbVille ; $i++) {
+				echo '<td>'.$this->listVille[$i]->getName().'</td>';
+			}
+			echo '</tr>';
+			for ($i=0; $i < $this->NbVille ; $i++) { 
+				echo '<tr>';
+				echo '<td>'.$this->listVille[$i]->getName().'</td>';
+				for ($j=0; $j < $this->NbVille; $j++) { 
+					if($j == $i){
+						echo '<td>#</td>';
+					}else{
+						echo '<td>'.$this->matrixPh[$i][$j].'</td>';
+					}
+				}
+				echo '</tr>';
 			}
 			echo '</table>';
 			echo '<br/><br/>';
+			echo '<h4>Couts trajets</h4>';
 			echo '<table class="superTable">';
 			echo '<tr>';
 			echo '<td> </td>';
@@ -263,22 +286,7 @@
 		}
 
 		public function drawSolution(){
-			if(!empty($this->bestTrajet)){
-				// for ($i=0; $i < count($this->bestTrajet) -2 ; $i++) { 
-				// 	for ($j=$i+1; $j <count($this->bestTrajet) -1 ; $j++) { 
-				// 		$source = $this->listVille[$this->getIndexByName($this->bestTrajet[$i])];
-				// 		$dest = $this->listVille[$this->getIndexByName($this->bestTrajet[$j])];
-				// 		echo '	ctx.beginPath();
-				// 			ctx.fillStyle="#FF0000";
-				// 			ctx.moveTo('.$source->x.','.$source->y.');
-				// 			ctx.lineTo('.$dest->x.','.$dest->y.');
-				// 			ctx.fillStyle="#FF0000";
-				// 			ctx.lineWidth = 2;
-				// 			ctx.stroke();
-				// 			console.log("toto");';
-				// 	}
-				// }
-				
+			if(!empty($this->bestTrajet)){	
 				$prec = false;
 				foreach ($this->bestTrajet as $Name) {
 				 	if($prec == false){

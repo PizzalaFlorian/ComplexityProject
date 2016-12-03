@@ -21,14 +21,6 @@ class City{
 		return $this->name;
 	}
 
-	// public function incrPheromone($val){
-	// 	$this->pheromone += $val;
-	// }
-
-	// public function getPheromone(){
-	// 	return $this->pheromone;
-	// }
-
 	public function setEvap($val){
 		$this->tauxEvaporation = $val;
 	}
@@ -37,14 +29,6 @@ class City{
 		$this->pheromone = 0;
 	}
 
-	// public function evaporate(){
-	// 	if($this->pheromone - $this->tauxEvaporation > 0){
-	// 		$this->pheromone -= $this->tauxEvaporation; 
-	// 	}
-	// 	else{
-	// 		$this->pheromone = 0;
-	// 	}
-	// }
 }
 
 ?>
