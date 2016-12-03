@@ -117,7 +117,7 @@
                 <?php
                     if(!empty($_SESSION["tsp"])){
                         $_SESSION["tsp"]->draw();
-                        //var_dump($_SESSION["tsp"]->listVille);
+                        var_dump($_SESSION["tsp"]->listVille);
                     }
                     else{
                         echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";

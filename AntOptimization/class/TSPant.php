@@ -81,6 +81,9 @@ class TSPant{
 		foreach ($listVille as $ville) {
 			//var_dump($ville);
 			$max += $matrix[$current][$ville->number];
+			if($max == 0){
+				$max = 1;
+			}
 			$tableRand[] = $max;
 		}
 		//tirage entre 1 et SumMax et comparaison sur les sommes.

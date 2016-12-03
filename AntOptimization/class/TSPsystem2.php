@@ -45,9 +45,6 @@
 		public function setParam($tauxEvaporation,$tauxFourmirs){
 			$this->tauxFourmirs = $tauxFourmirs;
 			$this->tauxEvaporation = $tauxEvaporation;
-			foreach ($this->listVille as $ville) {
-				$ville->setEvap($tauxEvaporation);
-			}
 		}
 
 		public function setListVille($stringVilles){
@@ -55,7 +52,7 @@
 			$count=0;
 			foreach ($list as $ville) {
 				if($ville!=""){
-					$city = new City($ville,$count,$this->tauxEvaporation,$this->maxDim);
+					$city = new City($ville,$count,$this->maxDim);
 					$this->listVille[] = $city;
 					$this->NbVille++;
 					$count++;
@@ -78,7 +75,7 @@
 
 					$this->matrixPh[$i][$j] = 0;
 					$this->matrixPh[$j][$i] = 0;
-					
+
 					$maxDist += $r;
 				}
 			}
@@ -115,9 +112,18 @@
 
 		//fonction d'évaporation
 		public function evaporate(){
-			// foreach ($this->listVille as $ville) {
-			// 	$ville->evaporate();
-			// }
+			for($i=0; $i < $this->NbVille - 1; $i++){
+				for ($j=($i+1); $j < $this->NbVille ; $j++) {	
+					$this->matrixPh[$i][$j] -= $this->tauxEvaporation;
+					if($this->matrixPh[$i][$j] < 0){
+						$this->matrixPh[$i][$j] = 0;
+					}
+					$this->matrixPh[$j][$i] -= $this->tauxEvaporation;
+					if($this->matrixPh[$j][$i] < 0){
+						$this->matrixPh[$j][$i] = 0;
+					}
+				}
+			}
 		}
 
 		public function getIndexByName($name){
@@ -214,9 +220,6 @@
 		}
 
 		public function reset(){
-			foreach ($this->listVille as $ville) {
-				$ville->resetSimu();
-			}
 			$this->resetMatrixPh();
 			$this->bestScore = 10000000000000000000000000000000000000;
 			$this->bestTrajet = array();
@@ -228,7 +231,7 @@
 		public function drawTableVille(){
 			echo '<div>';
 			echo '<h4>Pheromones</h4>';
-			echo '<table class="superTable">';
+			echo '<center><table class="superTable">';
 			echo '<tr>';
 			echo '<td> </td>';
 			for ($i=0; $i < $this->NbVille ; $i++) {
@@ -247,10 +250,10 @@
 				}
 				echo '</tr>';
 			}
-			echo '</table>';
+			echo '</table></center>';
 			echo '<br/><br/>';
 			echo '<h4>Couts trajets</h4>';
-			echo '<table class="superTable">';
+			echo '<center><table class="superTable">';
 			echo '<tr>';
 			echo '<td> </td>';
 			for ($i=0; $i < $this->NbVille ; $i++) {
@@ -269,7 +272,7 @@
 				}
 				echo '</tr>';
 			}
-			echo '</table>';
+			echo '</table></center>';
 			echo '</div>';
 
 		}
