@@ -298,13 +298,14 @@
 				 	else{
 				 		$current = $this->listVille[$this->getIndexByName($Name)];
 
-				 		echo '	ctx.beginPath();
-							ctx.moveTo('.$prec->x.','.$prec->y.');
-							ctx.lineTo('.$current->x.','.$current->y.');
-							ctx.fillStyle="#FF0000";
-							ctx.lineWidth = 3;
-							ctx.stroke();
-							console.log("toto");';
+				 		// echo '	ctx.beginPath();
+							// ctx.moveTo('.$prec->x.','.$prec->y.');
+							// ctx.lineTo('.$current->x.','.$current->y.');
+							// ctx.fillStyle="#FF0000";
+							// ctx.lineWidth = 3;
+							// ctx.stroke();
+							// console.log("toto");';
+						echo 'canvas_arrow(ctx,'.$prec->x.','.$prec->y.','.$current->x.','.$current->y.');';
 						$prec = $current;
 				 	}
 				 } 
@@ -320,6 +321,19 @@
 			var canvasWidth = canvas.width;
 			var canvasHeight = canvas.height;
 			var ctx = canvas.getContext("2d");
+
+			function canvas_arrow(context, fromx, fromy, tox, toy){
+			    var headlen = 20;
+			    var angle = Math.atan2(toy-fromy,tox-fromx);
+			    context.moveTo(fromx, fromy);
+			    context.lineTo(tox, toy);
+			    context.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
+			    context.moveTo(tox, toy);
+			    context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
+			    context.fillStyle="#FF0000";
+				context.lineWidth = 3;
+				context.stroke();
+			}
 
 			function city(x, y, ctx, lettre){
 				ctx.imageSmoothingEnabled = false;
