@@ -82,11 +82,11 @@
             <form action="tsp.php" method="post" class="w3-container w3-card-4">
                 <div class="w3-group">
                     <input class="w3-input" type="number" name="tf" value="<?php if(isset($_SESSION["tf"])){echo $_SESSION["tf"];}else{echo "0";} ?>" required>
-                    <label class="w3-label">Taux apparition fourmis par tour</label>
+                    <label class="w3-label">Taux apparition fourmis par tour (nombre)</label>
                 </div>
                 <div class="w3-group">
-                    <input class="w3-input" type="number" name="te" value="<?php if(isset($_SESSION["te"])){echo $_SESSION["te"];}else{echo "0";} ?>" required>
-                    <label class="w3-label">Taux évaporation du phéromone par tour</label>
+                    <input class="w3-input" type="text" name="te" value="<?php if(isset($_SESSION["te"])){echo $_SESSION["te"];}else{echo "0";} ?>" required>
+                    <label class="w3-label">Taux évaporation du phéromone par tour [0-1]</label>
                 </div>
                 <div class="w3-center">
                   <button type="submit" class="w3-btn w3-theme w3-center">Valider</button>
@@ -117,7 +117,7 @@
                 <?php
                     if(!empty($_SESSION["tsp"])){
                         $_SESSION["tsp"]->draw();
-                        var_dump($_SESSION["tsp"]->listVille);
+                        //var_dump($_SESSION["tsp"]->listVille);
                     }
                     else{
                         echo "<h4> Entrez des Paramètres pour commencer la simulation </h4>";

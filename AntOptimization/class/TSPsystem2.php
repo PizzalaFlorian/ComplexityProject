@@ -37,6 +37,7 @@
 			$this->bestTrajet = 0;
 
 			$this->maxDim = $maxDim;
+			$this->maxDist = 0;
 
 			$this->setListVille($stringVilles);
 			$this->constuctMatrix();
@@ -62,7 +63,7 @@
 		}
 
 		public function constuctMatrix(){
-			$maxDist = 0;
+			$this->maxDist = 0;
 			for($i=0; $i < $this->NbVille; $i++){
 				$this->matrixAdj[$i][$i] = 0;
 				$this->matrixPh[$i][$i] = 0;
@@ -76,10 +77,10 @@
 					$this->matrixPh[$i][$j] = 0;
 					$this->matrixPh[$j][$i] = 0;
 
-					$maxDist += $r;
+					$this->maxDist += $r;
 				}
 			}
-			$this->bestScore = $maxDist*2;
+			$this->bestScore = $this->maxDist*2;
 		}
 
 		public function resetMatrixPh(){
@@ -110,20 +111,25 @@
 			}
 		}
 
+		public function newValPh($currentVal, $ant){
+			$newval = $currentVal*$this->tauxEvaporation + ($this->maxDist / $ant->getScore());
+			return $newval;
+		}
+
 		//fonction d'évaporation
 		public function evaporate(){
-			for($i=0; $i < $this->NbVille - 1; $i++){
-				for ($j=($i+1); $j < $this->NbVille ; $j++) {	
-					$this->matrixPh[$i][$j] -= $this->tauxEvaporation;
-					if($this->matrixPh[$i][$j] < 0){
-						$this->matrixPh[$i][$j] = 0;
-					}
-					$this->matrixPh[$j][$i] -= $this->tauxEvaporation;
-					if($this->matrixPh[$j][$i] < 0){
-						$this->matrixPh[$j][$i] = 0;
-					}
-				}
-			}
+			// for($i=0; $i < $this->NbVille - 1; $i++){
+			// 	for ($j=($i+1); $j < $this->NbVille ; $j++) {	
+			// 		$this->matrixPh[$i][$j] -= $this->tauxEvaporation;
+			// 		if($this->matrixPh[$i][$j] < 0){
+			// 			$this->matrixPh[$i][$j] = 0;
+			// 		}
+			// 		$this->matrixPh[$j][$i] -= $this->tauxEvaporation;
+			// 		if($this->matrixPh[$j][$i] < 0){
+			// 			$this->matrixPh[$j][$i] = 0;
+			// 		}
+			// 	}
+			// }
 		}
 
 		public function getIndexByName($name){
@@ -151,7 +157,7 @@
 					$this->listFourmis[$i]->visite( $this->source , $this->matrixAdj[0][ $curr ]  );
 					
 					//Notifie qu'il faudra supprimer cette fourmis.
-					$this->matrixPh[$curr][ 0 ] += 1;
+					$this->matrixPh[$curr][ 0 ] = $this->newValPh($this->matrixPh[$curr][ 0 ],$this->listFourmis[$i]);
 					$remove = true;
 				}
 				else{
@@ -164,7 +170,7 @@
 					$curr = $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity());
 					$this->listFourmis[$i]->visite( $destName , $this->matrixAdj[$destIndex][ $curr]  );
 					//incrémente le phéromone pour notifié le passage dans la ville
-					$this->matrixPh[$curr][ $destIndex ] += 1;
+					$this->matrixPh[$curr][ $destIndex ] = $this->newValPh($this->matrixPh[$curr][ $destIndex ],$this->listFourmis[$i]);
 				}
 			}
 			//Nettoye les fourmis qui ont finis leurs trajets
@@ -191,13 +197,13 @@
 			if($this->tour==0){
 				$this->reinject();
 				$this->move();
-				$this->evaporate();
+				//$this->evaporate();
 				$this->tour++;
 			}
 			else{
 				$this->move();
 				$this->reinject();
-				$this->evaporate();
+				//$this->evaporate();
 				$this->tour++;
 			}
 		}
@@ -221,7 +227,7 @@
 
 		public function reset(){
 			$this->resetMatrixPh();
-			$this->bestScore = 10000000000000000000000000000000000000;
+			$this->bestScore = $this->maxDist;
 			$this->bestTrajet = array();
 			$this->listFourmis = array();
 			$this->tour=0;
@@ -245,7 +251,7 @@
 					if($j == $i){
 						echo '<td>#</td>';
 					}else{
-						echo '<td>'.$this->matrixPh[$i][$j].'</td>';
+						echo '<td>'.round($this->matrixPh[$i][$j],2).'</td>';
 					}
 				}
 				echo '</tr>';
@@ -297,19 +303,27 @@
 				 	}
 				 	else{
 				 		$current = $this->listVille[$this->getIndexByName($Name)];
-
-				 		// echo '	ctx.beginPath();
-							// ctx.moveTo('.$prec->x.','.$prec->y.');
-							// ctx.lineTo('.$current->x.','.$current->y.');
-							// ctx.fillStyle="#FF0000";
-							// ctx.lineWidth = 3;
-							// ctx.stroke();
-							// console.log("toto");';
 						echo 'canvas_arrow(ctx,'.$prec->x.','.$prec->y.','.$current->x.','.$current->y.');';
 						$prec = $current;
 				 	}
 				 } 
-				
+			}
+		}
+
+		public function drawSolutionVerbose(){
+			if(!empty($this->bestTrajet)){	
+				$prec = false;
+				foreach ($this->bestTrajet as $Name) {
+				 	if($prec == false){
+				 		$prec = $this->listVille[$this->getIndexByName($Name)];
+				 	}
+				 	else{
+				 		$current = $this->listVille[$this->getIndexByName($Name)];
+						//echo 'canvas_arrow(ctx,'.$prec->x.','.$prec->y.','.$current->x.','.$current->y.');';
+						echo $prec->getName().'->'.$current->getName().'<br/>';
+						$prec = $current;
+				 	}
+				 } 
 			}
 		}
 
@@ -325,14 +339,22 @@
 			function canvas_arrow(context, fromx, fromy, tox, toy){
 			    var headlen = 20;
 			    var angle = Math.atan2(toy-fromy,tox-fromx);
+			    context.lineWidth = 3;
 			    context.moveTo(fromx, fromy);
 			    context.lineTo(tox, toy);
 			    context.lineTo(tox-headlen*Math.cos(angle-Math.PI/6),toy-headlen*Math.sin(angle-Math.PI/6));
 			    context.moveTo(tox, toy);
 			    context.lineTo(tox-headlen*Math.cos(angle+Math.PI/6),toy-headlen*Math.sin(angle+Math.PI/6));
 			    context.fillStyle="#FF0000";
-				context.lineWidth = 3;
 				context.stroke();
+			}
+
+			function drawLine(ctx,x,y,toX,toY){
+				ctx.beginPath();
+				ctx.lineWidth = 1;
+				ctx.moveTo(x,y);
+				ctx.lineTo(toX,toY);
+				ctx.stroke();
 			}
 
 			function city(x, y, ctx, lettre){
@@ -351,13 +373,10 @@
 			}';
 			for ($i=0; $i < $this->NbVille; $i++) { 
 				for ($j=$i+1; $j <$this->NbVille ; $j++) { 
-					echo '	ctx.beginPath();
-							ctx.moveTo('.$this->listVille[$i]->x.','.$this->listVille[$i]->y.');
-							ctx.lineTo('.$this->listVille[$j]->x.','.$this->listVille[$j]->y.');
-							ctx.lineWidth = 1;
-							ctx.stroke();';
+					echo 'drawLine(ctx,'.$this->listVille[$i]->x.','.$this->listVille[$i]->y.','.$this->listVille[$j]->x.','.$this->listVille[$j]->y.');';
 					}
 				}
+			echo 'drawLine(ctx,-1,-1,-2,-2);';
 			$this->drawSolution();
 			foreach ($this->listVille as $ville) {
 				echo 'city('.$ville->x.','.$ville->y.',ctx,"'.$ville->getName().'");';
