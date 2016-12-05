@@ -74,7 +74,7 @@
             <form action="tsp.php" method="post" class="w3-container w3-card-4">
                 <div class="w3-group">
                     <input class="w3-input" type="number" name="list" value="<?php if(isset($_SESSION["list"])){echo $_SESSION["list"];}else{echo "0";} ?>" required>
-                    <label class="w3-label w3-validate">Liste Ville (séparator ";")</label>
+                    <label class="w3-label w3-validate">Nombre de ville</label>
                 </div>
                 <div class="w3-center">
                   <button type="submit" class="w3-btn w3-theme w3-center">Valider</button>
