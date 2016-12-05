@@ -90,6 +90,7 @@ class TSPant{
 		if($max > 0 && $trip > 0){
 			//var_dump('choix pondéré');
 			$r = rand(1,$max);
+			$r += lcg_value();//A tester
 			foreach ($tableRand as $key => $value) {
 				if($r < $value){
 					return $listVille[$key]->number;
