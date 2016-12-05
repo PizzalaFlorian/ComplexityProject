@@ -67,6 +67,7 @@ canvas{
 
 .superTable, .superTable td{
 	border:1px solid grey;
+	font-size: 12px;
 }
 
 .fb{
@@ -78,4 +79,8 @@ canvas{
 
 .fb div{
 	align-self: center;
+}
+
+.pad{
+	padding: 10px;
 }

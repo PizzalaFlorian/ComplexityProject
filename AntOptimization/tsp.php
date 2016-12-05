@@ -42,6 +42,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
 <!-- import perso -->
 <link rel="stylesheet" href="assets/css/main.css">
+<script type="text/javascript" src="assets/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="assets/js/canvas.js"></script>
+<script src="assets/js/pace.js"></script>
+<link href="assets/css/pace.css" rel="stylesheet" />
 
 <body>
     <!-- Side Navigation -->
@@ -69,7 +73,7 @@
             </div>  
             <form action="tsp.php" method="post" class="w3-container w3-card-4">
                 <div class="w3-group">
-                    <input class="w3-input" type="text" name="list" value="<?php if(isset($_SESSION["list"])){echo $_SESSION["list"];}else{echo "0";} ?>" required>
+                    <input class="w3-input" type="number" name="list" value="<?php if(isset($_SESSION["list"])){echo $_SESSION["list"];}else{echo "0";} ?>" required>
                     <label class="w3-label w3-validate">Liste Ville (séparator ";")</label>
                 </div>
                 <div class="w3-center">
@@ -128,6 +132,14 @@
             <br>
         </section>
     </section>
+    <?php
+      if(!empty($_SESSION["tsp"])){
+        if($_SESSION["tsp"]->savior == true){
+          $_SESSION["tsp"]->drawTableVille();
+        }
+      }              
+    ?>
+    
     <!-- Script for Sidenav, Tabs, Accordions, Progress bars and slideshows -->
     <script>
     // Side navigation

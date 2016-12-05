@@ -89,8 +89,8 @@ class TSPant{
 		//tirage entre 1 et SumMax et comparaison sur les sommes.
 		if($max > 0 && $trip > 0){
 			//var_dump('choix pondéré');
-			$r = rand(1,$max);
-			$r += lcg_value();//A tester
+			$r = rand(1,$max - 1);//max - 1 car on ajoute un float entre 0 et 1 ensuite et on veux éviter de faire une sortie de tableau
+			$r += lcg_value();//permet de simuler un rand sur un float
 			foreach ($tableRand as $key => $value) {
 				if($r < $value){
 					return $listVille[$key]->number;
