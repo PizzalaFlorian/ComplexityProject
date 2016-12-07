@@ -64,7 +64,12 @@
         <!--<i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-opennav"></i>-->
         <div class="w3-center">
             <h3 class="w3-animate-bottom">Projet Complexité M2 WIC 2016-2017</h3>
-            <h4>COLONIE DE FOURMIS</h4>
+            <h4>Le problème du voyageur</h4>
+             <a href="index.php" class="w3-tag w3-round w3-black w3-border-white" style="padding:3px;">
+          <div class="w3-tag w3-round w3-black w3-border w3-border-white">
+             Voir aussi la colonie de fourmis 
+          </div>
+        </a>
         </div>
     </header>
     <section class="container w3-center">
