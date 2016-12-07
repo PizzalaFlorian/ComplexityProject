@@ -9,6 +9,10 @@
         $_SESSION["list"] = $_POST["list"];
         $_SESSION["tsp"] = new TSPsystem($_POST["list"],700);
       }
+      else if(isset($_POST["nbtour"])){
+        $_SESSION["nbtour"] = $_POST["nbtour"];
+        $_SESSION["tsp"]->doNTrip($_POST["nbtour"]);
+      }
       else{
         $_SESSION["te"] = $_POST["te"];
         $_SESSION["tf"] = $_POST["tf"];
@@ -73,11 +77,11 @@
             </div>  
             <form action="tsp.php" method="post" class="w3-container w3-card-4">
                 <div class="w3-group">
-                    <input class="w3-input" type="number" name="list" value="<?php if(isset($_SESSION["list"])){echo $_SESSION["list"];}else{echo "0";} ?>" required>
+                    <input class="w3-input w3-border" type="number" name="list" value="<?php if(isset($_SESSION["list"])){echo $_SESSION["list"];}else{echo "0";} ?>" required>
                     <label class="w3-label w3-validate">Nombre de ville</label>
                 </div>
                 <div class="w3-center">
-                  <button type="submit" class="w3-btn w3-theme w3-center">Valider</button>
+                  <button type="submit" class="w3-btn w3-theme w3-center">Générer</button>
                 </div>
                 <br/>  
               </form>
@@ -85,15 +89,15 @@
             <hr>
             <form action="tsp.php" method="post" class="w3-container w3-card-4">
                 <div class="w3-group">
-                    <input class="w3-input" type="number" name="tf" value="<?php if(isset($_SESSION["tf"])){echo $_SESSION["tf"];}else{echo "0";} ?>" required>
+                    <input class="w3-input w3-border" type="number" name="tf" value="<?php if(isset($_SESSION["tf"])){echo $_SESSION["tf"];}else{echo "0";} ?>" required>
                     <label class="w3-label">Taux apparition fourmis par tour (nombre)</label>
                 </div>
                 <div class="w3-group">
-                    <input class="w3-input" type="text" name="te" value="<?php if(isset($_SESSION["te"])){echo $_SESSION["te"];}else{echo "0";} ?>" required>
+                    <input class="w3-input w3-border" type="text" name="te" value="<?php if(isset($_SESSION["te"])){echo $_SESSION["te"];}else{echo "0";} ?>" required>
                     <label class="w3-label">Taux évaporation du phéromone par tour [0-1]</label>
                 </div>
                 <div class="w3-center">
-                  <button type="submit" class="w3-btn w3-theme w3-center">Valider</button>
+                  <button type="submit" class="w3-btn w3-theme w3-center">Fixer les paramètres</button>
                 </div>
                 <br/>  
               </form>
@@ -106,6 +110,19 @@
                   <!-- <a href="tsp.php?tour" class="w3-btn w3-theme w3-center">Faire un tour</a> -->
                   <a href="tsp.php?voyage" class="w3-btn w3-theme w3-center">Faire un voyage</a>
                   <a href="tsp.php?10voyages" class="w3-btn w3-theme w3-center">Faire 10 voyages</a>
+                  <hr>
+
+                  <form action="tsp.php" method="post" class="">
+                    <div class="w3-group">
+                      <input class="w3-input w3-border" type="number" name="nbtour" value="<?php if(isset($_SESSION["nbtour"])){echo $_SESSION["nbtour"];}else{echo "0";} ?>" required>
+                      <label class="w3-label">Nombre de tour à effectuer</label>
+                    </div>
+                    <div class="w3-center">
+                      <button type="submit" class="w3-btn w3-theme w3-center">Run</button>
+                    </div>
+                    <br/>  
+                  </form>
+              
                   <hr>
                   <a href="tsp.php?reset" class="w3-btn w3-theme w3-center">Reset Simulation</a>
               </div> 

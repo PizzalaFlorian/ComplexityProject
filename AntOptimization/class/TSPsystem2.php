@@ -124,7 +124,8 @@
 		}
 
 		public function newValPh($currentVal, $ant){
-			$newval = $currentVal*$this->tauxEvaporation + ($this->maxDist / $ant->getScore());
+			// $newval = $currentVal*$this->tauxEvaporation + ($this->maxDist / $ant->getScore());
+			$newval = $currentVal + ($this->maxDist / $ant->getScore());
 			return $newval;
 		}
 
@@ -189,6 +190,15 @@
 			}
 		}
 
+		public function evaporate(){
+			for($i=0; $i < $this->NbVille; $i++){
+				for ($j=($i+1); $j < $this->NbVille ; $j++) {	
+					$this->matrixPh[$i][$j] = $this->matrixPh[$i][$j]*$this->tauxEvaporation;
+					$this->matrixPh[$j][$i] = $this->matrixPh[$j][$i]*$this->tauxEvaporation;
+				}
+			}
+		}
+
 		public function run(){
 			if($this->tour==0){
 				$this->reinject();
@@ -198,6 +208,7 @@
 			else{
 				$this->move();
 				$this->reinject();
+				$this->evaporate();
 				$this->tour++;
 			}
 		}
