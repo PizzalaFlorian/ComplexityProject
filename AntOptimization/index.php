@@ -37,15 +37,9 @@
 
 <body>
     <!-- Side Navigation -->
-    <!-- <nav class="w3-sidenav w3-white w3-card-2 w3-animate-left" style="display:none" id="mySidenav">
-        <h1 class="w3-xxxlarge w3-text-teal">Side Navigation</h1>
-        <a href="javascript:void(0)" onclick="w3_close()" class="w3-closenav w3-xxxlarge w3-text-theme">Close <i class="fa fa-remove"></i></a>
-        <a href="javascript:void(0)">Fourmis & Nourriture</a>
-        <a href="javascript:void(0)">Problème du voyageur</a>
-    </nav> -->
+  
     <!-- Header -->
     <header class="w3-container w3-theme w3-padding" id="myHeader">
-        <!--<i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-opennav"></i>-->
         <div class="w3-center">
             <h3 class="w3-animate-bottom">Projet Complexité M2 WIC 2016-2017</h3>
             <h4>COLONIE DE FOURMIS</h4>

@@ -53,7 +53,6 @@
 		}
 
 		public function setListVille($NombreVille){
-			// $list = explode(";",$stringVilles);
 			$count=0;
 			for ($i=0; $i < $NombreVille ; $i++) { 
 					$city = new City("".$i,$count,$this->maxDim);
@@ -61,15 +60,7 @@
 					$this->NbVille++;
 					$count++;
 			}
-			//var_dump($this->listVille);
-			// foreach ($list as $ville) {
-			// 	if($ville!=""){
-			// 		$city = new City($ville,$count,$this->maxDim);
-			// 		$this->listVille[] = $city;
-			// 		$this->NbVille++;
-			// 		$count++;
-			// 	}
-			// }
+		
 			$this->source = $this->listVille[0]->getName();
 		}
 
@@ -124,7 +115,6 @@
 		}
 
 		public function newValPh($currentVal, $ant){
-			// $newval = $currentVal*$this->tauxEvaporation + ($this->maxDist / $ant->getScore());
 			$newval = $currentVal + ($this->maxDist / $ant->getScore());
 			return $newval;
 		}
@@ -147,7 +137,6 @@
 			//var_dump('moove');
 			$remove = false;
 			for ($i=0; $i < count($this->listFourmis); $i++) { 
-				//var_dump($this->listFourmis);
 				if($this->listFourmis[$i]->isFinVoyage($this->NbVille)){
 				
 					$curr = $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity());
@@ -158,10 +147,8 @@
 					$remove = true;
 				}
 				else{
-					//var_dump('je suis en route');
 					//choisi la ville
 					$destIndex = $this->listFourmis[$i]->chooseDest($this->listVille,$this->matrixPh,$this->tripNumber);
-					//var_dump($destIndex);
 					$destName = $this->listVille[ $destIndex ]->getName();
 					//ajoute le trajet du coté de la fourmis
 					$curr = $this->getIndexByName( $this->listFourmis[$i]->nameCurrentCity());
@@ -215,7 +202,6 @@
 
 		public function multipleRun($val){
 			for($i=0;$i<$val;$i++){
-				//$this->reinject();
 				$this->run();
 			}
 		}
@@ -324,7 +310,6 @@
 				 	}
 				 	else{
 				 		$current = $this->listVille[$this->getIndexByName($Name)];
-						//echo 'canvas_arrow(ctx,'.$prec->x.','.$prec->y.','.$current->x.','.$current->y.');';
 						echo $prec->getName().'->'.$current->getName().'<br/>';
 						$prec = $current;
 				 	}
@@ -399,7 +384,6 @@
 			echo 'Cout du meilleur trajet : '.$this->bestScore.'<br/>';
 			if(!empty($this->bestTrajet)){
 				echo 'Trajet : ';
-				//var_dump($this->bestTrajet);
 				foreach ($this->bestTrajet as $key) {
 					echo '['.$key.']';
 				}

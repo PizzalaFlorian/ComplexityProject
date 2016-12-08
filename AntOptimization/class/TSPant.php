@@ -16,15 +16,12 @@ class TSPant{
 
 	public function isFinVoyage($maxVille){
 		if(($this->nombreVilleVisite ) == $maxVille){
-			//var_dump('maxVille');
-			//var_dump($maxVille);
 			return true;
 		}
 		return false;
 	}
 
 	public function visite($nomVille,$cout){
-		//var_dump('je me déplace à '.$nomVille);
 		$this->score += $cout;
 		$this->trajet[] = $nomVille;
 		$this->nombreVilleVisite++;
@@ -32,12 +29,9 @@ class TSPant{
 
 	//retourne l'index de la ville de destination en fonction du tableau de toutes les villes
 	public function chooseDest($listVille,$matrix,$trip){
-		//var_dump('choose dest');
 		$possibilite = $this->filterVille($listVille);
-		//var_dump($possibilite);
 		$current = $this->getIndexCurrentCity($listVille);
 		$resIndex = $this->choose($current,$possibilite,$matrix,$trip);
-		//var_dump($resIndex);
 		return $resIndex;
 	}
 
@@ -79,7 +73,6 @@ class TSPant{
 
 		//préparation max et table des sommes.
 		foreach ($listVille as $ville) {
-			//var_dump($ville);
 			$max += $matrix[$current][$ville->number];
 			if($max == 0){
 				$max = 1;
@@ -88,7 +81,6 @@ class TSPant{
 		}
 		//tirage entre 1 et SumMax et comparaison sur les sommes.
 		if($max > 0 && $trip > 0){
-			//var_dump('choix pondéré');
 			$r = rand(1,$max - 1);//max - 1 car on ajoute un float entre 0 et 1 ensuite et on veux éviter de faire une sortie de tableau
 			$r += lcg_value();//permet de simuler un rand sur un float
 			foreach ($tableRand as $key => $value) {
@@ -99,11 +91,7 @@ class TSPant{
 			return $listVille[count($listVille)-1]->number;
 		}
 		if($trip == 0 || $max == 0){
-			//var_dump('choix random');
 			$r = rand(0,count($listVille)-1);
-			//var_dump($r);
-			//var_dump($listVille[$r]);
-			//var_dump($listVille[$r]);
 			return $listVille[$r]->number;
 		}
 		
@@ -113,10 +101,7 @@ class TSPant{
 		if($this->nombreVilleVisite == 1){
 			return $this->source;
 		}
-		// var_dump($this->trajet[0]);
-		// var_dump($this->nombreVilleVisite);
 		$res = $this->trajet[$this->nombreVilleVisite - 1];
-		//var_dump($res);
 		return $res;
 	}
 
