@@ -152,7 +152,6 @@
         }
       }              
     ?>
-    <!-- Script for Sidenav, Tabs, Accordions, Progress bars and slideshows -->
     <script>
     // Side navigation
     function w3_open() {

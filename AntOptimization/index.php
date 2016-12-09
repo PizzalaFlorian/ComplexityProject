@@ -100,7 +100,7 @@
             <h3> Simulation </h3>
             <div class="w3-card-4 fenSim">
                 <?php
-                    if(!empty($_SESSION)){
+                    if(isset($_SESSION["simu"]) && !empty($_SESSION["simu"])){
                         $_SESSION["simu"]->draw();
                     }
                     else{
@@ -111,7 +111,6 @@
             <br>
         </section>
     </section>
-    <!-- Script for Sidenav, Tabs, Accordions, Progress bars and slideshows -->
     <script>
     // Side navigation
     function w3_open() {
